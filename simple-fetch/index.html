@@ -32,9 +32,10 @@
           console.log(data);
           // creates blob: urls
           imgElement.src = URL.createObjectURL(data);
+          // to avoid any memory leaks
+          URL.revokeObjectURL(data);
         })
         .catch(error => console.error(error));
-
     });
 
   </script>
