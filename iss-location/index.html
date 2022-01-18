@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ISS Location Data</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin="" 
+  />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin="">
+  </script>
+  <style>
+    * {
+      font-family: Arial, Helvetica, sans-serif;
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    h1 {
+      font-weight: 600;
+      font-size: 2.25rem;
+    }
+    span {
+      font-size: 0.8rem;
+    }
+    p {
+      font-size: 1rem;
+      margin: 2rem 0;
+    }
+    body {
+      margin: 1rem auto;
+      max-width: 800px;
+    }
+    #map {
+      height: 480px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Where's the ISS?</h1>
+
+  <p>
+    latitude: <span id="lat"></span><br>
+    longitude: <span id="lon"></span><br>
+    altitude: <span id="alt"></span><br>
+    visibility: <span id="vis"></span>
+  </p>
+
+  <div id="map"></div>
+
+  <script>
+
+  // Create a map
+    const map = L.map("map").setView([0, 0], 1);
+    const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution }).addTo(map);
+
+    // Marker
+    const ISS_icon = L.icon({
+      iconUrl: "iss_marker.png",
+      iconSize: [50, 50],
+      iconAnchor: [25, 25],
+      popupAnchor: [-3, -76],
+    });
+
+    const marker = L.marker([0, 0], {icon: ISS_icon})
+      .addTo(map)
+      .bindPopup('International Space Station');
+
+    const iss_url = "https://api.wheretheiss.at/v1/satellites/25544";
+
+    async function getData() {
+
+      const res = await fetch(iss_url);
+
+      const data = await res.json();
+
+      const { altitude, latitude, longitude, visibility } = data;
+
+      marker.setLatLng([latitude, longitude]);
+
+      document.getElementById("lat").textContent = latitude;
+      document.getElementById("lon").textContent = longitude;
+      document.getElementById("alt").textContent = altitude;
+      document.getElementById("vis").textContent = visibility;
+
+    }
+
+    getData();
+    const intervalId = setInterval(getData, 20000);
+
+  </script>
+</body>
+</html>
