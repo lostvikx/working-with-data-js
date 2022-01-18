@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+  <title>Data Selfie</title>
+  <style>
+    body {
+      max-width: 70vw;
+      margin: 1rem auto;
+    }
+    #map {
+      height: 480px;
+      margin: 2rem 0;
+    }
+    button {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Data Selfie</h1>
+
+  <div id="coords">
+    <p>
+      Latitude: <span id="lat"></span>&deg;<br />
+      Latitude: <span id="lng"></span>&deg;
+    </p>
+    <button type="button" id="copy-coords">Copy My Coords</button>
+  </div>
+
+  <div id="map"></div>
+
+  <script>
+
+    const lat = document.getElementById("lat");
+    const lng = document.getElementById("lng");
+
+    // Create a map
+    const map = L.map("map").setView([0, 0], 1);
+    const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution}).addTo(map);
+
+    const marker = L.marker([0, 0]).addTo(map).bindPopup("Your Location!");
+
+    // Copy coords btn
+    document.getElementById("copy-coords").addEventListener("click", () => {
+      window.navigator.clipboard.writeText(`${lat.textContent}° ${lng.textContent}°`)
+        .then(() => console.log("Copied Coords!"))
+        .catch(err => console.error(err));
+    });
+
+    // Get users' geolocation
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        console.log(position.coords);
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        lat.textContent = latitude;
+        lng.textContent = longitude;
+
+        marker.setLatLng([latitude, longitude]);
+        map.setView([latitude, longitude], 10);
+      }, 
+      err => console.error(err), 
+      { enableHighAccuracy: false }
+    );
+
+  </script>
+
+</body>
+</html>
