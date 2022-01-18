@@ -30,6 +30,7 @@
     p {
       font-size: 1rem;
       margin: 2rem 0;
+      line-height: 1.5;
     }
     body {
       margin: 1rem auto;
@@ -45,9 +46,9 @@
   <h1>Where's the ISS?</h1>
 
   <p>
-    latitude: <span id="lat"></span><br>
-    longitude: <span id="lon"></span><br>
-    altitude: <span id="alt"></span><br>
+    latitude: <span id="lat"></span><span>°</span><br>
+    longitude: <span id="lon"></span><span>°</span><br>
+    altitude: <span id="alt"></span> <span id="units"></span><br>
     visibility: <span id="vis"></span>
   </p>
 
@@ -55,8 +56,8 @@
 
   <script>
 
-  // Create a map
-    const map = L.map("map").setView([0, 0], 1);
+  // Create a map, rm canvas if err
+    const map = L.map("map", {renderer: L.canvas()}).setView([0, 0], 1);
     const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution }).addTo(map);
@@ -66,7 +67,7 @@
       iconUrl: "iss_marker.png",
       iconSize: [50, 50],
       iconAnchor: [25, 25],
-      popupAnchor: [-3, -76],
+      popupAnchor: [-5, -75],
     });
 
     const marker = L.marker([0, 0], {icon: ISS_icon})
@@ -75,6 +76,7 @@
 
     const iss_url = "https://api.wheretheiss.at/v1/satellites/25544";
 
+    // Get ISS location data
     async function getData() {
 
       const res = await fetch(iss_url);
@@ -83,17 +85,22 @@
 
       const { altitude, latitude, longitude, visibility } = data;
 
-      marker.setLatLng([latitude, longitude]);
+      // console.log(data);
 
-      document.getElementById("lat").textContent = latitude;
-      document.getElementById("lon").textContent = longitude;
-      document.getElementById("alt").textContent = altitude;
+      // set the lat and lng of marker
+      marker.setLatLng([latitude, longitude]);
+      map.setView([latitude, longitude], 3);
+
+      document.getElementById("lat").textContent = latitude.toFixed(2);
+      document.getElementById("lon").textContent = longitude.toFixed(2);
+      document.getElementById("alt").textContent = altitude.toFixed(2);
+      document.getElementById("units").textContent = data.units;
       document.getElementById("vis").textContent = visibility;
 
     }
 
     getData();
-    const intervalId = setInterval(getData, 20000);
+    const intervalId = setInterval(getData, 10000);
 
   </script>
 </body>
