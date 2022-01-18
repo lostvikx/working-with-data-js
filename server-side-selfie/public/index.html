@@ -12,6 +12,9 @@
     crossorigin=""></script>
   <title>Data Selfie</title>
   <style>
+    h1 {
+      font-weight: 500;
+    }
     body {
       max-width: 70vw;
       margin: 1rem auto;
@@ -34,6 +37,7 @@
       Latitude: <span id="lng"></span>&deg;
     </p>
     <button type="button" id="copy-coords">Copy My Coords</button>
+    <span id="copy-alert"></span>
   </div>
 
   <div id="map"></div>
@@ -56,19 +60,24 @@
       window.navigator.clipboard.writeText(`${lat.textContent}° ${lng.textContent}°`)
         .then(() => console.log("Copied Coords!"))
         .catch(err => console.error(err));
+
+      const alertMessage = document.getElementById("copy-alert");
+
+      alertMessage.textContent = "Copied 👍"
+      setTimeout(() => alertMessage.textContent = "", 5000);
     });
 
     // Get users' geolocation
     navigator.geolocation.getCurrentPosition(
       position => {
-        console.log(position.coords);
+        // console.log(position.coords);
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
         lat.textContent = latitude;
         lng.textContent = longitude;
 
         marker.setLatLng([latitude, longitude]);
-        map.setView([latitude, longitude], 10);
+        map.setView([latitude, longitude], 15);
       }, 
       err => console.error(err), 
       { enableHighAccuracy: false }
