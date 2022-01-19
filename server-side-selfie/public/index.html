@@ -36,8 +36,14 @@
       Latitude: <span id="lat"></span>&deg;<br />
       Latitude: <span id="lng"></span>&deg;
     </p>
-    <button type="button" id="copy-coords">Copy My Coords</button>
+    <button type="button" id="copy-coords">
+      Copy My Coords
+    </button>
     <span id="copy-alert"></span>
+
+    <button type="button" id="send-coords">
+      Send Coords
+    </button>
   </div>
 
   <div id="map"></div>
@@ -82,6 +88,38 @@
       err => console.error(err), 
       { enableHighAccuracy: false }
     );
+
+    // send coords
+    document.getElementById("send-coords")
+      .addEventListener("click", async () => {
+
+        const coords = {
+          lat: lat.textContent,
+          lng: lng.textContent,
+          timeStamp: new Date().toISOString()
+        };
+
+        // console.log(coords);
+
+        try {
+          
+          const response = await fetch("/api", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(coords)
+          });
+
+          const data = await response.json();
+
+          console.log(data);
+
+        } catch (err) {
+          console.error(err);
+        }
+
+      });
 
   </script>
 
