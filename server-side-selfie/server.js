@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 const express = require("express");
-const fs = require("fs");
-const write_data = require("./apis/write_data")
+const write_data = require("./apis/write_data");
 
 const app = express();
 const PORT = 3000;
@@ -29,8 +28,7 @@ app.post("/api", (req, res) => {
   // The middleware to automatically parse JSON.
   const data = req.body;
 
-  console.log(data);
-
+  // console.log(data);
   write_data(data);
 
   res.status(200).json({
@@ -39,5 +37,6 @@ app.post("/api", (req, res) => {
     lng: data.lng,
     timeStamp: data.timeStamp
   });
+
   res.end();
 });

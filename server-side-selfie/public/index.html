@@ -94,9 +94,9 @@
       .addEventListener("click", async () => {
 
         const coords = {
-          lat: lat.textContent,
-          lng: lng.textContent,
-          timeStamp: new Date().toISOString()
+          lat: Number(lat.textContent),
+          lng: Number(lng.textContent),
+          timeStamp: Date.now()
         };
 
         // console.log(coords);
