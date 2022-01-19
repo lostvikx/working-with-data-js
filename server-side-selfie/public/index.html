@@ -25,6 +25,18 @@
     }
     button {
       cursor: pointer;
+      margin: 0.5rem 0;
+      background: rgb(175, 230, 150);
+      border: none;
+      padding: 0.4em 0.5em;
+      border-radius: 5px;
+    }
+    #copy-coords {
+      background: rgb(230, 150, 150);
+    }
+    input {
+      padding: 0.3em 0.4em;
+      margin-right: 1rem;
     }
   </style>
 </head>
@@ -37,13 +49,16 @@
       Latitude: <span id="lng"></span>&deg;
     </p>
     <button type="button" id="copy-coords">
-      Copy My Coords
+      Copy Coords to Clipboard 📋
     </button>
     <span id="copy-alert"></span>
 
-    <button type="button" id="send-coords">
-      Send Coords
-    </button>
+    <form method="post" id="send-coords">
+      <input type="text" name="mood" id="input-mood" autocomplete="off">
+      <button type="submit">
+        Submit
+      </button>
+    </form>
   </div>
 
   <div id="map"></div>
@@ -89,17 +104,26 @@
       { enableHighAccuracy: false }
     );
 
-    // send coords
-    document.getElementById("send-coords")
-      .addEventListener("click", async () => {
+    let mood = null;
+    document.getElementById("input-mood")
+      .addEventListener("keyup", event => {
+        mood = event.target.value;
+      });
 
-        const coords = {
+    // send post request
+    document.getElementById("send-coords")
+      .addEventListener("submit", async (event) => {
+
+        event.preventDefault();
+
+        const sendData = {
           lat: Number(lat.textContent),
           lng: Number(lng.textContent),
-          timeStamp: Date.now()
+          timeStamp: Date.now(),
+          mood
         };
 
-        // console.log(coords);
+        // console.log(sendData);
 
         try {
           
@@ -108,7 +132,7 @@
             headers: {
               "Content-Type": "application/json"
             },
-            body: JSON.stringify(coords)
+            body: JSON.stringify(sendData)
           });
 
           const data = await response.json();

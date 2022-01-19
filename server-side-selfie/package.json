@@ -1,6 +1,6 @@
 {
   "name": "server-side-selfie",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "stores selfie data",
   "main": "server.js",
   "scripts": {
@@ -9,11 +9,12 @@
   },
   "keywords": [
     "selfie",
-    "data"
+    "database"
   ],
   "author": "Vikram S. Negi",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "nedb": "^1.8.0"
   }
 }

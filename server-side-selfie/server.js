@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const express = require("express");
 const write_data = require("./apis/write_data");
+const Datastore = require("nedb");
 
 const app = express();
 const PORT = 3000;
@@ -22,6 +23,9 @@ app.use(express.json({
 }));
 
 
+const db = new Datastore({ filename: "location.db" });
+db.loadDatabase(err => console.error(err));
+
 // post request
 app.post("/api", (req, res) => {
 
@@ -29,13 +33,18 @@ app.post("/api", (req, res) => {
   const data = req.body;
 
   // console.log(data);
-  write_data(data);
+  // write to JSON file
+  // write_data(data);
+
+  // insert in db file
+  db.insert(data);
 
   res.status(200).json({
     status: "OK",
     lat: data.lat,
     lng: data.lng,
-    timeStamp: data.timeStamp
+    timeStamp: data.timeStamp,
+    mood: data.mood
   });
 
   res.end();
