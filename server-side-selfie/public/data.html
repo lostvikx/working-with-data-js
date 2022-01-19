@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Databreach</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Straight outta database 🥷</h1>
+
+  <a href="index.html">Go home!</a>
+
+  <div id="all-data"></div>
+
+
+  <script>
+
+    const getAllData = async () => {
+
+      try {
+
+        const response = await fetch("/api");
+        const data = await response.json();
+        // console.log(data);
+
+        const allData = document.getElementById("all-data");
+
+        for (const item of data) {
+
+          const root = document.createElement("div")
+          const coordinates = document.createElement("p");
+          const mood = document.createElement("p");
+          const timeStamp = document.createElement("p");
+
+          coordinates.textContent = `lat: ${item.lat}° lng: ${item.lng}°`;
+          mood.textContent = `current mood: ${item.mood}`;
+          timeStamp.textContent = new Date(item.timeStamp).toLocaleString();
+
+          root.append(coordinates, mood, timeStamp, document.createElement("hr"));
+          allData.append(root);
+        }
+
+      } catch (err) {
+        console.error(err);
+      }
+
+    }
+
+    getAllData();
+
+  </script>
+
+</body>
+</html>

@@ -11,37 +11,12 @@
     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
     crossorigin=""></script>
   <title>Data Selfie</title>
-  <style>
-    h1 {
-      font-weight: 500;
-    }
-    body {
-      max-width: 70vw;
-      margin: 1rem auto;
-    }
-    #map {
-      height: 480px;
-      margin: 2rem 0;
-    }
-    button {
-      cursor: pointer;
-      margin: 0.5rem 0;
-      background: rgb(175, 230, 150);
-      border: none;
-      padding: 0.4em 0.5em;
-      border-radius: 5px;
-    }
-    #copy-coords {
-      background: rgb(230, 150, 150);
-    }
-    input {
-      padding: 0.3em 0.4em;
-      margin-right: 1rem;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Data Selfie</h1>
+  <h1>Data Selfie 📸</h1>
+
+  <a href="data.html">Gimme all the data!</a>
 
   <div id="coords">
     <p>
@@ -54,10 +29,11 @@
     <span id="copy-alert"></span>
 
     <form method="post" id="send-coords">
-      <input type="text" name="mood" id="input-mood" autocomplete="off">
+      <input type="text" name="mood" id="input-mood" autocomplete="off" required placeholder="How are you feeling?">
       <button type="submit">
         Submit
       </button>
+      <span id="submit-alert"></span>
     </form>
   </div>
 
@@ -104,6 +80,7 @@
       { enableHighAccuracy: false }
     );
 
+    // mood data input
     let mood = null;
     document.getElementById("input-mood")
       .addEventListener("keyup", event => {
@@ -138,6 +115,13 @@
           const data = await response.json();
 
           console.log(data);
+
+          document.getElementById("send-coords").reset();
+
+          const alertMessage = document.getElementById("submit-alert");
+
+          alertMessage.textContent = "Data sent successfully! 🎉"
+          setTimeout(() => alertMessage.textContent = "", 5000);
 
         } catch (err) {
           console.error(err);

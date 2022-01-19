@@ -26,6 +26,19 @@ app.use(express.json({
 const db = new Datastore({ filename: "location.db" });
 db.loadDatabase(err => console.error(err));
 
+app.get("/api", (req, res) => {
+
+  db.find({}, (err, data) => {
+    if (err) console.error(err);
+    else {
+      // console.log(data, typeof data);
+      res.json(data.sort((a, b) => {
+        return (a.timeStamp < b.timeStamp) ? 1 : -1;
+      }));
+    }
+  });
+});
+
 // post request
 app.post("/api", (req, res) => {
 
@@ -39,13 +52,5 @@ app.post("/api", (req, res) => {
   // insert in db file
   db.insert(data);
 
-  res.status(200).json({
-    status: "OK",
-    lat: data.lat,
-    lng: data.lng,
-    timeStamp: data.timeStamp,
-    mood: data.mood
-  });
-
-  res.end();
+  res.status(200).json(data);
 });
