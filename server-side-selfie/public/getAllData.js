@@ -10,7 +10,7 @@
 
     for (const item of data) {
 
-      const root = document.createElement("p")
+      const root = document.createElement("p");
       const coordinates = document.createElement("div");
       const mood = document.createElement("div");
       const timeStamp = document.createElement("div");

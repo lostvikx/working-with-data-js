@@ -2,6 +2,7 @@
 const express = require("express");
 const write_data = require("./apis/write_data");
 const Datastore = require("nedb");
+const writeImg = require("./apis/writeImg");
 
 const app = express();
 const PORT = 3000;
@@ -44,6 +45,12 @@ app.post("/api", (req, res) => {
 
   // The middleware to automatically parse JSON.
   const data = req.body;
+
+  // Delete picture from data
+  const img64 = data.picture || null;
+  delete data.picture;
+
+  const pathToImg = writeImg(img64);
 
   // console.log(data);
   // write to JSON file

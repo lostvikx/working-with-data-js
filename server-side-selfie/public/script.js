@@ -51,11 +51,14 @@ document.getElementById("send-coords")
 
     event.preventDefault();
 
+    const photo = document.getElementById("photo");
+
     const sendData = {
       lat: Number(lat.textContent),
       lng: Number(lng.textContent),
       timeStamp: Date.now(),
-      mood
+      mood,
+      picture: photo.src
     };
 
     // console.log(sendData);
