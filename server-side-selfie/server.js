@@ -25,7 +25,8 @@ app.use(express.json({
 }));
 
 
-const db = new Datastore({ filename: "location.db" });
+const db = new Datastore({ filename: `${__dirname}/location.db` });
+
 db.loadDatabase(err => {
   if (err) console.error(err);
 });
