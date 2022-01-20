@@ -52,6 +52,8 @@ app.post("/api", (req, res) => {
 
   const pathToImg = writeImg(img64);
 
+  data.pathToImg = pathToImg;
+
   // console.log(data);
   // write to JSON file
   // write_data(data);

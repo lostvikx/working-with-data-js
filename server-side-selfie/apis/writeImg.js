@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const fs = require("fs");
+const randomName = require("./randomName");
 
 module.exports = (img64) => {
 
@@ -8,17 +9,22 @@ module.exports = (img64) => {
     return null;
   }
 
-  const matchArr = img64.match(/^data:(\w+\/(\w+));(base64),(\S+)/);
-  // ["data:image/png;base64,iVBORw0KGgoAAAA...", "image/png", "png", "base64", "iVBORw0KGgoAAAA..."]
-  // console.log(matchArr);
+  const fileName = randomName();
 
-  console.log(matchArr[1], matchArr[2], matchArr[3]);
+  const [fullBase64Url, mimeType, fileExtension, bufferType, url] = img64.match(/^data:(\w+\/(\w+));(base64),(\S+)$/);
 
-  const buffer = Buffer.from(matchArr[4], "base64");
+  // Gets us this => ["data:image/png;base64,iVBORw0KGgoAAAA...", "image/png", "png", "base64", "iVBORw0KGgoAAAA..."]
 
-  fs.writeFile(`${__dirname}/../public/img/test1.png`, buffer, err => {
+  // console.log(fileExtension, url, mimeType, bufferType);
+
+  // The Buffer class in Node.js is designed to handle raw binary data. 
+  const buffer = Buffer.from(url, bufferType);
+
+  // Save the img file
+  fs.writeFile(`${__dirname}/../public/img/${fileName}.${fileExtension}`, buffer, err => {
     console.error(err);
   });
 
-  
+  return `img/${fileName}.${fileExtension}`
+
 }
