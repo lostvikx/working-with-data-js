@@ -65,11 +65,8 @@
   }
 
   captureButton.addEventListener("click", (evt) => {
-
     evt.preventDefault();
-
     takePicture();
-
   });
 
 })();

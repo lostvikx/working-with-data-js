@@ -2,6 +2,7 @@
 
 const lat = document.getElementById("lat");
 const lng = document.getElementById("lng");
+const alertMessage = document.getElementById("alert");
 
 // Create a map
 const map = L.map("map").setView([0, 0], 1);
@@ -16,8 +17,6 @@ document.getElementById("copy-coords").addEventListener("click", () => {
   window.navigator.clipboard.writeText(`${lat.textContent}° ${lng.textContent}°`)
     .then(() => console.log("Copied Coords!"))
     .catch(err => console.error(err));
-
-  const alertMessage = document.getElementById("copy-alert");
 
   alertMessage.textContent = "Copied 👍"
   setTimeout(() => alertMessage.textContent = "", 5000);
@@ -76,8 +75,6 @@ document.getElementById("send-coords")
       console.log(data);
 
       document.getElementById("send-coords").reset();
-
-      const alertMessage = document.getElementById("submit-alert");
 
       alertMessage.textContent = "Data sent successfully! 🎉"
       setTimeout(() => alertMessage.textContent = "", 5000);
