@@ -18,14 +18,17 @@ app.use("/projects", express.static(__dirname + "/public/projects"));
 app.listen(PORT, () => console.log(`listening on http://localhost:${PORT}/`));
 
 
+// Increase the limit if you get LargePayloadError
 app.use(express.json({
-  limit: "200kb",
+  limit: "2mb",
   type: "application/json"
 }));
 
 
 const db = new Datastore({ filename: "location.db" });
-db.loadDatabase(err => console.error(err));
+db.loadDatabase(err => {
+  if (err) console.error(err);
+});
 
 app.get("/api", (req, res) => {
 

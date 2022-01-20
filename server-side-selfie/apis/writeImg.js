@@ -22,7 +22,7 @@ module.exports = (img64) => {
 
   // Save the img file
   fs.writeFile(`${__dirname}/../public/img/${fileName}.${fileExtension}`, buffer, err => {
-    console.error(err);
+    if (err) console.error(err);
   });
 
   return `img/${fileName}.${fileExtension}`

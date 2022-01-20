@@ -14,12 +14,16 @@
       const coordinates = document.createElement("div");
       const mood = document.createElement("div");
       const timeStamp = document.createElement("div");
+      const img = document.createElement("img");
 
       coordinates.textContent = `lat: ${item.lat}° lng: ${item.lng}°`;
       mood.textContent = `current mood: ${item.mood}`;
       timeStamp.textContent = new Date(item.timeStamp).toLocaleString();
 
-      root.append(coordinates, mood, timeStamp);
+      img.alt = "Your Picture Saved in Database 😎";
+      img.src = item.pathToImg;
+
+      root.append(img, coordinates, mood, timeStamp);
       allData.append(root, document.createElement("hr"));
     }
 
