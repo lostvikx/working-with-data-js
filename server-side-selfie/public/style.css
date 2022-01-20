@@ -2,14 +2,14 @@ h1 {
   font-weight: 500;
 }
 body {
-  max-width: 70vw;
+  max-width: 60vw;
   margin: 1rem auto;
 }
 #map {
   height: 240px;
   width: 426px;
-  margin: 2rem 0;
 }
+
 button {
   cursor: pointer;
   margin: 0.5rem 0;
@@ -18,6 +18,11 @@ button {
   padding: 0.4em 0.5em;
   border-radius: 5px;
 }
+
+button:hover {
+  box-shadow: 7px 7px 0px 0px rgba(0, 0, 255, .1);
+}
+
 #copy-coords {
   background: rgb(230, 150, 150);
 }
@@ -34,4 +39,29 @@ a {
 }
 a:hover {
   box-shadow: 7px 7px 0px 0px rgba(0, 0, 255, .1);
+}
+
+.flex {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  margin: 2rem 0;
+}
+
+#camera {
+  display: flex;
+  flex-direction: column;
+}
+
+#capture-btn {
+  background-color: rgb(245, 245, 140);
+}
+
+canvas {
+  display: none;
+}
+
+hr {
+  width: 80%;
+  opacity: 40%;
 }
