@@ -9,6 +9,11 @@
   const canvas = document.getElementById("canvas");
   const photo = document.getElementById("photo");
   const captureButton = document.getElementById("capture-btn");
+  const deleteButton = document.getElementById("delete-btn");
+
+  photo.setAttribute("src", "img/blank_img.png");
+  photo.setAttribute("width", 300);
+  photo.setAttribute("height", 150);
 
   // Get user media stream from webcam, then set video.srcObject to display the video stream.
   navigator.mediaDevices
@@ -35,6 +40,9 @@
       canvas.setAttribute("width", width);
       canvas.setAttribute("height", height);
 
+      photo.setAttribute("width", width);
+      photo.setAttribute("height", height);
+
       streaming = true;
     }
 
@@ -43,6 +51,8 @@
   const context = canvas.getContext("2d");
 
   const clearPicture = () => {
+
+    photo.setAttribute("src", "img/blank_img.png");
 
     context.fillStyle = "#AAA";
     context.fillRect(0, 0, canvas.width, canvas.height);
@@ -68,5 +78,10 @@
     evt.preventDefault();
     takePicture();
   });
+
+  deleteButton.addEventListener("click", (evt) => {
+    evt.preventDefault();
+    clearPicture();
+  })
 
 })();

@@ -1,13 +1,31 @@
+:root {
+  --pink: rgb(250, 145, 145);
+  --yellow: rgb(240, 240, 140);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 h1 {
   font-weight: 500;
 }
+
+p {
+  font-size: 0.8rem;
+}
+
 body {
-  max-width: 60vw;
+  max-width: 65vw;
   margin: 1rem auto;
 }
+
 #map {
   height: 240px;
   width: 426px;
+  margin: 0 auto;
 }
 
 button {
@@ -15,8 +33,9 @@ button {
   margin: 0.5rem 0;
   background: rgb(175, 230, 150);
   border: none;
-  padding: 0.4em 0.5em;
+  padding: 0.4em 0.7em;
   border-radius: 5px;
+  text-align: center;
 }
 
 button:hover {
@@ -24,12 +43,20 @@ button:hover {
 }
 
 #copy-coords {
-  background: rgb(230, 150, 150);
+  background: none;
+  opacity: 60%;
 }
+
+#copy-coords:hover {
+  opacity: 100%;
+  box-shadow: none;
+}
+
 input {
   padding: 0.3em 0.4em;
-  margin-right: 1rem;
+  margin: 0 1rem 0 0.3rem;
 }
+
 a {
   text-decoration: none;
   color: #000;
@@ -37,24 +64,24 @@ a {
   padding: 0.3em 0.4em;
   border-radius: 5px;
 }
+
+a:visited {
+  text-decoration: none;
+}
+
 a:hover {
   box-shadow: 7px 7px 0px 0px rgba(0, 0, 255, .1);
 }
 
-.flex {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-  margin: 2rem 0;
-}
-
-#camera {
+.center-col-flex {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #capture-btn {
-  background-color: rgb(245, 245, 140);
+  background-color: var(--yellow);
 }
 
 canvas {
@@ -64,4 +91,67 @@ canvas {
 hr {
   width: 80%;
   opacity: 40%;
+}
+
+#coords {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.main {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
+  margin: 1rem auto;
+  padding: 1em auto;
+}
+
+#send-coords {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-link {
+  margin: 1rem;
+}
+
+.capture-photo {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 0.25rem;
+}
+
+img {
+  height: 100%;
+}
+
+.out-img {
+  height: 240px;
+}
+
+#delete-btn {
+  background-color: var(--pink);
+}
+
+header {
+  margin: 1rem auto;
+}
+
+#alert {
+  height: 1rem;
+}
+
+label {
+  font-size: 0.9rem;
+}
+
+#video, #photo {
+  border: 1px black solid;
+  border-radius: 10px;
 }

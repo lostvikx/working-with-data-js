@@ -22,14 +22,18 @@ document.getElementById("copy-coords").addEventListener("click", () => {
   setTimeout(() => alertMessage.textContent = "", 5000);
 });
 
+let latitude = null;
+let longitude = null;
+
 // Get users' geolocation
 navigator.geolocation.getCurrentPosition(
   position => {
     // console.log(position.coords);
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    lat.textContent = latitude;
-    lng.textContent = longitude;
+    latitude = position.coords.latitude;
+    longitude = position.coords.longitude;
+    // display only 4 decimal places
+    lat.textContent = latitude.toFixed(4);
+    lng.textContent = longitude.toFixed(4);
 
     marker.setLatLng([latitude, longitude]);
     map.setView([latitude, longitude], 15);
@@ -54,8 +58,8 @@ document.getElementById("send-coords")
     const photo = document.getElementById("photo");
 
     const sendData = {
-      lat: Number(lat.textContent),
-      lng: Number(lng.textContent),
+      lat: latitude,
+      lng: longitude,
       timeStamp: Date.now(),
       mood,
       picture: photo.src

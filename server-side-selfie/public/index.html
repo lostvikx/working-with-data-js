@@ -14,45 +14,56 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Data Selfie 📸</h1>
 
-  <a href="data.html">Gimme all the data!</a>
-  <span id="alert"></span>
+  <header class="center-col-flex">
+    <h1>Data Selfie 📸</h1>
 
-  <div class="flex">
+    <a class="back-link" href="data.html">
+      Gimme all the data!</a>
+    <div id="alert"></div>
+
+  </header>
+
+  <div class="main">
+
+    <div class="capture-photo">
+      <div id="camera" class="center-col-flex">
+        <video id="video">
+          <p>Connect a webcam!</p>
+        </video>
+        <button id="capture-btn">Say Cheese</button>
+        <canvas id="canvas"></canvas>
+      </div>
+      <div id="output-img" class="center-col-flex">
+        <div class="out-img">
+          <img alt="Your Picture!" id="photo">
+        </div>
+        <button id="delete-btn">Delete</button>
+      </div>
+    </div>
+
     <div id="coords">
-      <p>
-        Latitude: <span id="lat"></span>&deg;<br />
-        Latitude: <span id="lng"></span>&deg;
-      </p>
-      <button type="button" id="copy-coords">
-        Copy Coords to Clipboard 📋
+      <p>Lat: <span id="lat"></span>&deg;
+        Long: <span id="lng"></span>&deg;</p>
+      <button type="button" id="copy-coords" title="Copy Coords to Clipboard">
+        📋
       </button>
       <!-- <span id="copy-alert"></span> -->
 
-      <form method="post" id="send-coords">
-        <input type="text" name="mood" id="input-mood" autocomplete="off" required placeholder="How are you feeling?">
-        <button type="submit">
-          Submit
-        </button>
-        <!-- <span id="submit-alert"></span> -->
-      </form>
+      
     </div>
-    <div id="camera">
-      <video id="video"><p>Connect a webcam!</p></video>
-      <button id="capture-btn">Say Cheese</button>
-      <canvas id="canvas"></canvas>
-    </div>
+
+    <form method="post" id="send-coords">
+      <label for="mood">Mood:</label>
+      <input type="text" name="mood" id="input-mood" autocomplete="off" required placeholder="How are you feeling?">
+      <button type="submit">
+        Submit
+      </button>
+      <!-- <span id="submit-alert"></span> -->
+    </form>
   </div>
 
-  <div class="flex">
-    <div id="map"></div>
-    <div id="output-img">
-      <div class="out-img">
-        <img alt="Your Picture!" id="photo">
-      </div>
-    </div>
-  </div>
+  <div id="map"></div>
 
   <script src="script.js"></script>
   <script src="capturePicture.js"></script>
