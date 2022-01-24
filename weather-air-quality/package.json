@@ -1,0 +1,23 @@
+{
+  "name": "weather-air-quality",
+  "version": "1.0.0",
+  "description": "Uses APIs to get weather and air quality data from external sources.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "weather",
+    "api",
+    "air",
+    "quality"
+  ],
+  "author": "Vikram S. Negi",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^14.2.0",
+    "express": "^4.17.2",
+    "node-fetch": "^2.6.7"
+  }
+}
