@@ -18,14 +18,63 @@ app.use(express.json({
 
 app.listen(PORT, "localhost", () => console.log(`listening on port http://localhost:${PORT}/`));
 
+// an async function always returns a promise
+const getWeatherData = async (lat, lon, apiKey) => {
+
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+  const res = await fetch(url);
+  const data = await res.json();
+
+  return data;
+
+}
+
+const getAirQualityData = async (lat, lon) => {
+
+  const url = `https://docs.openaq.org/v2/latest?limit=5&sort=desc&coordinates=${lat}%2C${lon}&radius=10000&order_by=lastUpdated&dumpRaw=false`;
+
+  const res = await fetch(url);
+  const data = await res.json();
+
+  return data;
+
+}
+
+const getAllData = async (lat, lon) => {
+
+  const weatherData = getWeatherData(lat, lon, weather_api_key);
+  const aqData = getAirQualityData(lat, lon);
+
+  const allData = await Promise.all([ weatherData, aqData ]);
+
+  return allData;
+
+}
+
 // This is called a proxy server
-app.get("/weather/lat/:lat/lon/:lon", async (req, res) => {
+app.get("/weather", async (req, res) => {
 
-  const { lat, lon } = req.params;
-  
-  const json_res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weather_api_key}&units=metric`);
+  // console.log(req.query);
+  const { lat, lon } = req.query;
 
-  const data = await json_res.json();
+  // 514.9ms
+  // console.time("blocking");
+  // // weather api
+  // const weatherData = await getWeatherData(lat, lon, weather_api_key);
+  // // air quality api
+  // const aqData = await getAirQualityData(lat, lon);
+
+  // const data = {
+  //   weather: weatherData,
+  //   airQuality: aqData
+  // };
+  // console.timeEnd("blocking");
+
+  // 300ms
+  console.time("non-blocking");
+  const data = await getAllData(lat, lon);
+  console.timeEnd("non-blocking");
 
   res.json(data);
 
