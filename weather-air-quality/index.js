@@ -21,23 +21,37 @@ app.listen(PORT, "localhost", () => console.log(`listening on port http://localh
 // an async function always returns a promise
 const getWeatherData = async (lat, lon, apiKey) => {
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+  try {
+    
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
 
-  const res = await fetch(url);
-  const data = await res.json();
+    const res = await fetch(url);
+    const data = await res.json();
 
-  return data;
+    return data;
+
+  } catch (err) {
+    console.warn("getWeatherData failed!");
+    console.error(err);
+  }
 
 }
 
 const getAirQualityData = async (lat, lon) => {
 
-  const url = `https://docs.openaq.org/v2/latest?limit=5&sort=desc&coordinates=${lat}%2C${lon}&radius=10000&order_by=lastUpdated&dumpRaw=false`;
+  try {
+    
+    const url = `https://docs.openaq.org/v2/latest?limit=5&sort=desc&coordinates=${lat}%2C${lon}&radius=10000&order_by=lastUpdated&dumpRaw=false`;
 
-  const res = await fetch(url);
-  const data = await res.json();
+    const res = await fetch(url);
+    const data = await res.json();
 
-  return data;
+    return data;
+
+  } catch (err) {
+    console.warn("getAirQualityData failed!");
+    console.error(err);
+  }
 
 }
 
@@ -58,8 +72,7 @@ app.get("/weather", async (req, res) => {
   // console.log(req.query);
   const { lat, lon } = req.query;
 
-  // 514.9ms
-  // console.time("blocking");
+  // 700ms
   // // weather api
   // const weatherData = await getWeatherData(lat, lon, weather_api_key);
   // // air quality api
@@ -69,12 +82,9 @@ app.get("/weather", async (req, res) => {
   //   weather: weatherData,
   //   airQuality: aqData
   // };
-  // console.timeEnd("blocking");
 
   // 300ms
-  console.time("non-blocking");
   const data = await getAllData(lat, lon);
-  console.timeEnd("non-blocking");
 
   res.json(data);
 
