@@ -27,21 +27,48 @@ navigator.geolocation.getCurrentPosition(async pos => {
     console.log(data);
 
     const temp_info = data[0];
-    console.log("temp:", temp_info.main.temp);
-    console.log("humidity:", temp_info.main.humidity);
-    console.log("wind speed:", temp_info.wind.speed);
 
-    // results are sorted by nearest
-    const air_quality = data[1].results[0];
-    console.log("city:", air_quality.city);
-    const first_measurement = air_quality.measurements[0]
-    console.log(`air quality: ${first_measurement.value} (${first_measurement.parameter})`);
-    console.log("lastUpdated:", new Date(first_measurement.lastUpdated).toLocaleString());
+    if (temp_info.failed) {
 
-    
+      console.log(temp_info.message);
+      info.tempDataFailed = true;
+
+    } else {
+
+      info.temp = temp_info.main.temp;
+      info.humidity = temp_info.main.humidity;
+      info.windSpeed = temp_info.wind.speed;
+
+    }
+
+    const air_info = data[1];
+
+    if (air_info.failed) {
+
+      console.log(air_info.message);
+      info.airDataFailed = true;
+
+    } else {
+
+      // results are sorted by nearest
+      const air_quality = air_info.results[0];
+      const first_measurement = air_quality.measurements.filter(reading => reading.parameter === "pm10")[0];
+
+      // console.log(first_measurement);
+
+      info.location = air_quality.location;
+      info.city = air_quality.city;
+      info.airQuality = first_measurement.value;
+      info.airQualityUnit = first_measurement.unit || "µg/m³";
+      info.lastUpdated = new Date(first_measurement.lastUpdated).toLocaleString();
+
+    }
+
+    console.log(info);
 
   } catch (err) {
-    console.warn(err);
+    console.error(err);
+    console.warn("All promises failed!");
   }
 
 });

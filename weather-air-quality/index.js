@@ -4,7 +4,6 @@ require("dotenv").config();
 const fetch = require("node-fetch");
 
 const weather_api_key = process.env.WEATHER_API_KEY;
-// const icon_url = "http://openweathermap.org/img/wn/icon@id.png";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -33,6 +32,24 @@ const getWeatherData = async (lat, lon, apiKey) => {
   } catch (err) {
     console.warn("getWeatherData failed!");
     console.error(err);
+    return { failed: true, message: "No temperature data available" };
+  }
+
+}
+
+const getWeatherIcon = async (icon, id) => {
+
+  const url = `http://openweathermap.org/img/wn/${icon}@${id}.png`;
+
+  try {
+    
+    const res = await fetch(url);
+    const data = await res.json();
+    console.log(data);
+
+  } catch (err) {
+    console.warn("getWeatherIcon failed!");
+    console.error(err);
   }
 
 }
@@ -51,6 +68,7 @@ const getAirQualityData = async (lat, lon) => {
   } catch (err) {
     console.warn("getAirQualityData failed!");
     console.error(err);
+    return { failed: true, message: "No air quality data available" };
   }
 
 }
@@ -71,20 +89,9 @@ app.get("/weather", async (req, res) => {
 
   // console.log(req.query);
   const { lat, lon } = req.query;
-
-  // 700ms
-  // // weather api
-  // const weatherData = await getWeatherData(lat, lon, weather_api_key);
-  // // air quality api
-  // const aqData = await getAirQualityData(lat, lon);
-
-  // const data = {
-  //   weather: weatherData,
-  //   airQuality: aqData
-  // };
-
-  // 300ms
   const data = await getAllData(lat, lon);
+
+
 
   res.json(data);
 
