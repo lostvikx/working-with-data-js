@@ -28,9 +28,11 @@ module.exports = async (iconName, iconBlob) => {
         }
       });
 
-    } else {
-      console.log("file already exists!", stats);
-    }
+    } 
+    
+    // else {
+    //   console.log("file already exists!", stats);
+    // }
 
   });
 

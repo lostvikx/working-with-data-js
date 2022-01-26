@@ -20,6 +20,7 @@ app.use(express.json({
 app.listen(PORT, "localhost", () => console.log(`listening on port http://localhost:${PORT}/`));
 
 // an async function always returns a promise
+// 60 calls per minute
 const getWeatherData = async (lat, lon, apiKey) => {
 
   try {
