@@ -2,6 +2,8 @@
 const express = require("express");
 require("dotenv").config();
 const fetch = require("node-fetch");
+const fs = require("fs");
+const makeIcon = require("./apis/makeIcon");
 
 const weather_api_key = process.env.WEATHER_API_KEY;
 
@@ -37,15 +39,16 @@ const getWeatherData = async (lat, lon, apiKey) => {
 
 }
 
-const getWeatherIcon = async (icon, id) => {
+const getWeatherIcon = async (icon) => {
 
-  const url = `http://openweathermap.org/img/wn/${icon}@${id}.png`;
+  const url = `http://openweathermap.org/img/wn/${icon}@2x.png`;
 
   try {
     
     const res = await fetch(url);
-    const data = await res.json();
-    console.log(data);
+    const data = await res.blob();
+    
+    return data;
 
   } catch (err) {
     console.warn("getWeatherIcon failed!");
@@ -84,14 +87,21 @@ const getAllData = async (lat, lon) => {
 
 }
 
-// This is called a proxy server
+// This is called a proxy server (middle man)
 app.get("/weather", async (req, res) => {
 
   // console.log(req.query);
   const { lat, lon } = req.query;
   const data = await getAllData(lat, lon);
 
+  const weatherData = data[0];
 
+  const iconName = weatherData.weather[0].icon;
+  const iconBlob = await getWeatherIcon(iconName);
+
+  const iconPath = await makeIcon(iconName, iconBlob);
+
+  data.push({ iconPath });
 
   res.json(data);
 
