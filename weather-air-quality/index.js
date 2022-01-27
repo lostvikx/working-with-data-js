@@ -1,12 +1,9 @@
 #!/usr/bin/env node
 const express = require("express");
 require("dotenv").config();
-const fetch = require("node-fetch");
 const fs = require("fs");
 const makeIcon = require("./apis/makeIcon");
-const getWeatherIcon = require("./apis/getWeatherIcon");
-const getWeatherData = require("./apis/getWeatherData");
-const getAirQualityData = require("./apis/getAirQualityData");
+const FetchData = require("./apis/FetchData");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,10 +19,12 @@ app.listen(PORT, "localhost", () => console.log(`listening on port http://localh
 
 const getAllData = async (lat, lon) => {
 
+  const fetchData = new FetchData(lat, lon);
+
   const weather_api_key = process.env.WEATHER_API_KEY;
 
-  const weatherData = getWeatherData(lat, lon, weather_api_key);
-  const aqData = getAirQualityData(lat, lon);
+  const weatherData = fetchData.getWeatherData(lat, lon, weather_api_key);
+  const aqData = fetchData.getAirQualityData(lat, lon);
 
   const allData = await Promise.all([ weatherData, aqData ]);
 
@@ -54,7 +53,7 @@ app.get("/weather", async (req, res) => {
     // console.warn(iconName, "doesn't exists");
     // console.error(err);
 
-    const iconBlob = await getWeatherIcon(iconName);
+    const iconBlob = await FetchData.getWeatherIcon(iconName);
     iconPath = await makeIcon(iconName, iconBlob);
   }
 

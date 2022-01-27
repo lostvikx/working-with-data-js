@@ -6,9 +6,12 @@ const getData = async (lat, lon) => {
 
     const info = {};
     const res = await fetch(`/weather?lat=${lat}&lon=${lon}`);
-    const [weatherData, aqData, weatherImg] = await res.json();
+    const [weatherData, aqData, weatherImgPath] = await res.json();
 
-    console.log(weatherData, aqData, weatherImg);
+    // console.log(weatherData, aqData, weatherImgPath);
+
+    const { iconPath } = weatherImgPath;
+    info.weatherIconPath = iconPath;
 
     const temp_info = weatherData;
 
