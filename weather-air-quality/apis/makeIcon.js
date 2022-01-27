@@ -3,6 +3,11 @@ const fs = require("fs");
 
 module.exports = async (iconName, iconBlob) => {
 
+  if (iconBlob === null) {
+    // console.log("iconBlob === null");
+    return "";
+  }
+
   const fileExtension = iconBlob.type.split("/")[1];
   const file = `img_${iconName}.${fileExtension}`;
 
@@ -29,7 +34,6 @@ module.exports = async (iconName, iconBlob) => {
       });
 
     } 
-    
     // else {
     //   console.log("file already exists!", stats);
     // }

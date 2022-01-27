@@ -5,28 +5,17 @@ const latitude = document.getElementById("lat");
 const longitude = document.getElementById("lon");
 const weatherBtn = document.getElementById("get-weather");
 
-const info = {};
-
-navigator.geolocation.getCurrentPosition(async pos => {
-
-  const coords = pos.coords;
-
-  // console.log(coords);
-
-  const lat = coords.latitude;
-  const lon = coords.longitude;
-
-  latitude.textContent = lat.toFixed(4);
-  longitude.textContent = lon.toFixed(4);
+const getData = async (lat, lon) => {
 
   try {
 
+    const info = {};
     const res = await fetch(`/weather?lat=${lat}&lon=${lon}`);
-    const data = await res.json();
+    const [ weatherData, aqData, weatherImg ] = await res.json();
 
-    console.log(data);
+    console.log(weatherData, aqData, weatherImg);
 
-    const temp_info = data[0];
+    const temp_info = weatherData;
 
     if (temp_info.failed) {
 
@@ -41,7 +30,7 @@ navigator.geolocation.getCurrentPosition(async pos => {
 
     }
 
-    const air_info = data[1];
+    const air_info = aqData;
 
     if (air_info.failed) {
 
@@ -64,11 +53,27 @@ navigator.geolocation.getCurrentPosition(async pos => {
 
     }
 
-    console.log(info);
+    return info;
 
   } catch (err) {
     console.error(err);
     console.warn("All promises failed!");
   }
+
+}
+
+navigator.geolocation.getCurrentPosition( async pos => {
+
+  const coords = pos.coords;
+  // console.log(coords);
+
+  const lat = coords.latitude;
+  const lon = coords.longitude;
+
+  latitude.textContent = lat.toFixed(4);
+  longitude.textContent = lon.toFixed(4);
+
+  const data = await getData(lat, lon);
+  console.log(data);
 
 });
