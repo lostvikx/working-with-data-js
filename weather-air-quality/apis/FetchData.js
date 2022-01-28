@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const fetch = require("node-fetch");
+const fs = require("fs");
 
 module.exports = class FetchData {
 
@@ -12,7 +13,7 @@ module.exports = class FetchData {
 
     try {
 
-      const url = `https://docs.openaq.org/v2/latest?limit=5&sort=desc&coordinates=${lat}%2C${lon}&radius=10000&order_by=lastUpdated&dumpRaw=false`;
+      const url = `https://docs.openaq.org/v2/latest?limit=1&sort=desc&coordinates=${lat}%2C${lon}&radius=10000&order_by=lastUpdated&dumpRaw=false`;
 
       const res = await fetch(url);
       const data = await res.json();
@@ -64,6 +65,18 @@ module.exports = class FetchData {
       console.error(err);
       return null;
     }
+
+  }
+
+  static getCoords(jsonFileName) {
+
+    const data = fs.readFileSync(__dirname + `/../${jsonFileName}.json`, {
+      encoding: "utf-8",
+      flag: "r"
+    });
+    const allCoords = JSON.parse(data);
+    
+    return allCoords;
 
   }
 

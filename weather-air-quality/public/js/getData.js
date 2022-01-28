@@ -4,59 +4,69 @@ const getData = async (lat, lon) => {
 
   try {
 
-    const info = {};
     const res = await fetch(`/weather?lat=${lat}&lon=${lon}`);
-    const [weatherData, aqData, weatherImgPath] = await res.json();
+    const data = await res.json();
+    const allPlacesInfo = [];
 
-    // console.log(weatherData, aqData, weatherImgPath);
+    for (const place of data) {
 
-    const { iconPath } = weatherImgPath;
-    info.weatherIconPath = iconPath;
+      const [weatherData, aqData, weatherImgPath, city] = place;
 
-    const temp_info = weatherData;
+      const info = {};
 
-    if (temp_info.failed) {
+      // console.log(weatherData, aqData, weatherImgPath);
 
-      console.log(temp_info.message);
-      info.tempDataFailed = true;
+      const { iconPath } = weatherImgPath;
+      info.weatherIconPath = iconPath;
 
-    } else {
+      const temp_info = weatherData;
 
-      info.temp = temp_info.main.temp;
-      info.humidity = temp_info.main.humidity;
-      info.windSpeed = temp_info.wind.speed;
+      if (temp_info.failed) {
+
+        console.log(temp_info.message);
+        info.tempDataFailed = true;
+
+      } else {
+
+        info.temp = temp_info.main.temp;
+        info.humidity = temp_info.main.humidity;
+        info.windSpeed = temp_info.wind.speed;
+
+      }
+
+      const air_info = aqData;
+
+      if (air_info.failed) {
+
+        console.log(air_info.message);
+        info.airDataFailed = true;
+
+      } else {
+
+        // results are sorted by nearest
+        const air_quality = air_info.results[0];
+        const first_measurement = air_quality.measurements.filter(reading => reading.parameter === "pm10")[0];
+
+        // console.log(first_measurement);
+
+        info.location = air_quality.location;
+        info.city = city;
+        info.airQuality = first_measurement.value;
+        info.airQualityUnit = first_measurement.unit || "µg/m³";
+        info.lastUpdated = new Date(first_measurement.lastUpdated).toLocaleString();
+
+      }
+
+      allPlacesInfo.push(info);
 
     }
 
-    const air_info = aqData;
-
-    if (air_info.failed) {
-
-      console.log(air_info.message);
-      info.airDataFailed = true;
-
-    } else {
-
-      // results are sorted by nearest
-      const air_quality = air_info.results[0];
-      const first_measurement = air_quality.measurements.filter(reading => reading.parameter === "pm10")[0];
-
-      // console.log(first_measurement);
-
-      info.location = air_quality.location;
-      info.city = air_quality.city;
-      info.airQuality = first_measurement.value;
-      info.airQualityUnit = first_measurement.unit || "µg/m³";
-      info.lastUpdated = new Date(first_measurement.lastUpdated).toLocaleString();
-
-    }
-
-    return info;
+    return allPlacesInfo;
 
   } catch (err) {
     console.error(err);
     console.warn("All promises failed!");
-    return info;
+    return allPlacesInfo;
   }
 
 }

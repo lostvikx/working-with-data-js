@@ -52,6 +52,12 @@ navigator.geolocation.getCurrentPosition(async pos => {
   const data = await getData(lat, lon);
   console.log(data);
 
-  placeMarker(lat, lon, data);
+  // data.forEach(place => placeMarker(lat, lon, data));
+
+  // for (const place of data) {
+
+  //   placeMarker();
+
+  // }
 
 }, (err) => console.error(err));

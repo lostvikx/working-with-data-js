@@ -36,12 +36,35 @@ const getAllData = async (lat, lon) => {
 // This is called a proxy server (middle man)
 app.get("/weather", async (req, res) => {
 
+  const allCoords = FetchData.getCoords("test-coords");
+  // console.log(allCoords);
   // console.log(req.query);
   const { lat, lon } = req.query;
-  const data = await getAllData(lat, lon);
-  const iconPath = await fetchIcon(data[0]);
 
-  data.push({iconPath});
+  allCoords.push({
+    location: "Current",
+    coords: { lat, lon }
+  });
+
+  // const data = await getAllData(lat, lon);
+  // const iconPath = await fetchIcon(data[0]);
+
+  const dataForAllCoords = allCoords.map(async ({ location, coords }) => {
+
+    const data = await getAllData(coords.lat, coords.lon);
+    const iconPath = await fetchIcon(data[0]);
+    data.push({ iconPath });
+    data.push({ city: location });
+    data.push({ coords });
+
+    return data;
+
+  });
+
+  const data = await Promise.all(dataForAllCoords);
   console.log(data);
+
+  // data.push({iconPath});
+  // console.log(data); // [{weatherData}, {aqData}, {iconPath}, {city}]
   res.json(data);
 });
