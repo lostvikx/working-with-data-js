@@ -34,8 +34,6 @@ const placeMarker = (lat, lon, data) => {
     </p>
   `);
 
-  map.setView([lat, lon], 5);
-
 }
 
 navigator.geolocation.getCurrentPosition(async pos => {
@@ -54,10 +52,14 @@ navigator.geolocation.getCurrentPosition(async pos => {
 
   // data.forEach(place => placeMarker(lat, lon, data));
 
-  // for (const place of data) {
+  for (const place of data) {
 
-  //   placeMarker();
+    placeMarker(place.coords.lat, place.coords.lon, place);
 
-  // }
+    if (place.city == "Home") {
+      map.setView([place.coords.lat, place.coords.lon], 5);
+    }
+
+  }
 
 }, (err) => console.error(err));

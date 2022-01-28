@@ -36,13 +36,13 @@ const getAllData = async (lat, lon) => {
 // This is called a proxy server (middle man)
 app.get("/weather", async (req, res) => {
 
-  const allCoords = FetchData.getCoords("test-coords");
+  const allCoords = FetchData.getCoords("location-coords");
   // console.log(allCoords);
   // console.log(req.query);
   const { lat, lon } = req.query;
 
   allCoords.push({
-    location: "Current",
+    location: "Home",
     coords: { lat, lon }
   });
 
@@ -62,9 +62,8 @@ app.get("/weather", async (req, res) => {
   });
 
   const data = await Promise.all(dataForAllCoords);
-  console.log(data);
 
   // data.push({iconPath});
-  // console.log(data); // [{weatherData}, {aqData}, {iconPath}, {city}]
+  console.log(data); // [{weatherData}, {aqData}, {iconPath}, {city}]
   res.json(data);
 });

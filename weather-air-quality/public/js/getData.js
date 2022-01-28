@@ -10,9 +10,10 @@ const getData = async (lat, lon) => {
 
     for (const place of data) {
 
-      const [weatherData, aqData, weatherImgPath, city] = place;
+      const [weatherData, aqData, weatherImgPath, {city}, {coords}] = place;
 
       const info = {};
+      info.coords = coords;
 
       // console.log(weatherData, aqData, weatherImgPath);
 
@@ -43,17 +44,23 @@ const getData = async (lat, lon) => {
 
       } else {
 
-        // results are sorted by nearest
-        const air_quality = air_info.results[0];
-        const first_measurement = air_quality.measurements.filter(reading => reading.parameter === "pm10")[0];
+        if (air_info.results.length == 0) {
+          info.airDataFailed = true;
+        } else {
 
-        // console.log(first_measurement);
+          // results are sorted by nearest
+          const air_quality = air_info.results[0];
+          const first_measurement = air_quality.measurements[0];
 
-        info.location = air_quality.location;
-        info.city = city;
-        info.airQuality = first_measurement.value;
-        info.airQualityUnit = first_measurement.unit || "µg/m³";
-        info.lastUpdated = new Date(first_measurement.lastUpdated).toLocaleString();
+          // console.log(first_measurement);
+
+          info.location = air_quality.location;
+          info.city = city;
+          info.airQuality = first_measurement.value;
+          info.airQualityUnit = first_measurement.unit || "µg/m³";
+          info.lastUpdated = new Date(first_measurement.lastUpdated).toLocaleString();
+
+        }
 
       }
 
