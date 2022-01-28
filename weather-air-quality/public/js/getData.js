@@ -1,12 +1,21 @@
 "use strict";
 
+import cacheData from "./cacheData.js";
+
 const getData = async (lat, lon) => {
 
   const allPlacesInfo = [];
 
   try {
 
-    const res = await fetch(`/weather?lat=${lat}&lon=${lon}`);
+    const reqURL = `/weather?lat=${lat}&lon=${lon}`;
+
+    const res = await fetch(reqURL, {
+      cache: "default"
+    });
+
+    // cacheData(reqURL);
+
     const data = await res.json();
 
     for (const place of data) {

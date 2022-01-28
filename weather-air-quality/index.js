@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 const express = require("express");
 require("dotenv").config();
-const fs = require("fs");
-const makeIcon = require("./apis/makeIcon");
+// const cache = require("node-cache");
 const FetchData = require("./apis/FetchData");
 const fetchIcon = require("./apis/fetchIcon");
 
