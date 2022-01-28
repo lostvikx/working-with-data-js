@@ -1,8 +1,10 @@
 "use strict";
 
-import storeCache from "./storeCache.js";
+import storeCacheCoords from "./storeCacheCoords.js";
 
 const getData = async (lat, lon, location) => {
+
+  const info = {};
 
   try {
 
@@ -21,7 +23,7 @@ const getData = async (lat, lon, location) => {
 
       console.warn(`${url} not found in cache`);
 
-      res = await storeCache(url, cache);
+      res = await storeCacheCoords(url, cache);
 
     }
 
@@ -29,7 +31,6 @@ const getData = async (lat, lon, location) => {
 
     const [weatherData, aqData, weatherImgPath] = data;
 
-    const info = {};
     info.coords = { lat, lon };
     info.city = location;
 
@@ -54,6 +55,7 @@ const getData = async (lat, lon, location) => {
     }
 
     const air_info = aqData;
+    // console.log(air_info)
 
     if (air_info.failed) {
 
@@ -83,7 +85,7 @@ const getData = async (lat, lon, location) => {
 
         info.location = air_quality.location;
         info.airQuality = first_measurement.value;
-        info.airQualityUnit = first_measurement.unit || "µg/m³";
+        info.airQualityUnit = first_measurement.unit;
         info.lastUpdated = new Date(first_measurement.lastUpdated).toLocaleString();
 
       }

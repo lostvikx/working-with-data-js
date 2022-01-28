@@ -74,6 +74,7 @@ module.exports = class FetchData {
       encoding: "utf-8",
       flag: "r"
     });
+    
     const allCoords = JSON.parse(data);
     
     return allCoords;

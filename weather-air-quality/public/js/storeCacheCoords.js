@@ -1,6 +1,6 @@
 "use strict";
 
-const storeCache = async (url, cache) => {
+const storeCacheCoords = async (url, cache) => {
 
   try {
 
@@ -26,4 +26,4 @@ const storeCache = async (url, cache) => {
 
 }
 
-export default storeCache;
+export default storeCacheCoords;
