@@ -19,25 +19,35 @@ const getData = async (lat, lon, location) => {
 
     if (res === undefined) {
 
-      console.warn("url not found in cache");
+      console.warn(`${url} not found in cache`);
 
-      try {
+      const storeCache = async (url, cache) => {
 
-        res = await fetch(url, {
-          method: "GET",
-          cache: "default",
-          headers: {
-            "Content-Type": "application/json"
-          }
-        });
+        try {
 
-        // const cache = await caches.open("allCoords");
-        await cache.put(url, res);
+          res = await fetch(url, {
+            method: "GET",
+            cache: "default",
+            headers: {
+              "Content-Type": "application/json"
+            }
+          });
 
-      } catch (err) {
-        console.error(err);
-        console.log("couldn't fetch", url);
+          // clone is needed because put() consumes the response body
+          const response = res.clone();
+
+          await cache.put(url, res);
+
+          return response;          
+
+        } catch (err) {
+          console.error(err);
+          console.log("couldn't fetch", url);
+        }
+        
       }
+
+      res = await storeCache(url, cache);
 
     }
 
