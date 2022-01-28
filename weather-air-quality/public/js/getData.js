@@ -2,11 +2,12 @@
 
 const getData = async (lat, lon) => {
 
+  const allPlacesInfo = [];
+
   try {
 
     const res = await fetch(`/weather?lat=${lat}&lon=${lon}`);
     const data = await res.json();
-    const allPlacesInfo = [];
 
     for (const place of data) {
 
@@ -14,6 +15,7 @@ const getData = async (lat, lon) => {
 
       const info = {};
       info.coords = coords;
+      info.city = city;
 
       // console.log(weatherData, aqData, weatherImgPath);
 
@@ -46,16 +48,24 @@ const getData = async (lat, lon) => {
 
         if (air_info.results.length == 0) {
           info.airDataFailed = true;
+          info.airQuality = null;
+          info.airQualityUnit = null;
+          console.log(`${city} has no air quality measurements.`);
         } else {
 
           // results are sorted by nearest
           const air_quality = air_info.results[0];
-          const first_measurement = air_quality.measurements[0];
+          let first_measurement = air_quality.measurements
+            .filter((measurement) => measurement.parameter == "pm10" || measurement.parameter == "co")[0];
+
+          if (first_measurement == undefined) {
+            first_measurement = air_quality.measurements[0];
+            console.log(`${city} had no measurements in pm10 or co.`);
+          }
 
           // console.log(first_measurement);
 
           info.location = air_quality.location;
-          info.city = city;
           info.airQuality = first_measurement.value;
           info.airQualityUnit = first_measurement.unit || "µg/m³";
           info.lastUpdated = new Date(first_measurement.lastUpdated).toLocaleString();
