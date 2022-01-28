@@ -58,14 +58,8 @@ navigator.geolocation.getCurrentPosition(async pos => {
   });
   console.log(allLocationsWithCoords);
 
-  // const data = await getData(lat, lon);
-  // console.log(data);
-
-  const allLocPromises = allLocationsWithCoords.map(async ({ location, coords }) => {
-
-    return getData(coords.lat, coords.lon, location);
-
-  });
+  const allLocPromises = allLocationsWithCoords
+    .map(async ({ location, coords }) => getData(coords.lat, coords.lon, location));
 
   const data = await Promise.all(allLocPromises);
   console.log(data);

@@ -1,6 +1,6 @@
 "use strict";
 
-// import cacheData from "./cacheData.js";
+import storeCache from "./storeCache.js";
 
 const getData = async (lat, lon, location) => {
 
@@ -20,32 +20,6 @@ const getData = async (lat, lon, location) => {
     if (res === undefined) {
 
       console.warn(`${url} not found in cache`);
-
-      const storeCache = async (url, cache) => {
-
-        try {
-
-          res = await fetch(url, {
-            method: "GET",
-            cache: "default",
-            headers: {
-              "Content-Type": "application/json"
-            }
-          });
-
-          // clone is needed because put() consumes the response body
-          const response = res.clone();
-
-          await cache.put(url, res);
-
-          return response;          
-
-        } catch (err) {
-          console.error(err);
-          console.log("couldn't fetch", url);
-        }
-        
-      }
 
       res = await storeCache(url, cache);
 
@@ -88,21 +62,21 @@ const getData = async (lat, lon, location) => {
 
     } else {
 
-      if (air_info.results.length == 0) {
+      if (air_info.results.length == 0 || air_info.results == undefined) {
         info.airDataFailed = true;
-        info.airQuality = null;
-        info.airQualityUnit = null;
+        info.airQuality = "No data";
+        info.airQualityUnit = "";
         console.log(`${info.city} has no air quality measurements.`);
       } else {
 
         // results are sorted by nearest
         const air_quality = air_info.results[0];
         let first_measurement = air_quality.measurements
-          .filter((measurement) => measurement.parameter == "pm10" || measurement.parameter == "co")[0];
+          .filter((measurement) => measurement.parameter == "pm10")[0];
 
         if (first_measurement == undefined) {
+          console.log(`${info.city} had no measurements in pm10.`);
           first_measurement = air_quality.measurements[0];
-          console.log(`${info.city} had no measurements in pm10 or co.`);
         }
 
         // console.log(first_measurement);

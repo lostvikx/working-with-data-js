@@ -64,6 +64,6 @@ app.get("/weather", async (req, res) => {
 
   data.push({iconPath});
   // console.log(data); // [{weatherData}, {aqData}, {iconPath}]
-  res.setHeader("Cache-Control", "public, max-age=30");
+  res.setHeader("Cache-Control", "private, max-age=30");
   res.json(data);
 });
