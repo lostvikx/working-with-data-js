@@ -1,0 +1,23 @@
+[
+  {
+    "location": "Tokyo",
+    "coords": {
+      "lat": 35.686734,
+      "lon": 139.769036
+    }
+  },
+  {
+    "location": "Kuala Lumpur",
+    "coords": {
+      "lat": 3.132620,
+      "lon": 101.681967
+    }
+  },
+  {
+    "location": "New Delhi",
+    "coords": {
+      "lat": 28.597856,
+      "lon": 77.219071
+    }
+  }
+]

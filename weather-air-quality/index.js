@@ -4,6 +4,7 @@ require("dotenv").config();
 const fs = require("fs");
 const makeIcon = require("./apis/makeIcon");
 const FetchData = require("./apis/FetchData");
+const fetchIcon = require("./apis/fetchIcon");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -38,26 +39,9 @@ app.get("/weather", async (req, res) => {
   // console.log(req.query);
   const { lat, lon } = req.query;
   const data = await getAllData(lat, lon);
+  const iconPath = await fetchIcon(data[0]);
 
-  const weatherData = data[0];
-
-  const iconName = weatherData.weather[0].icon;
-  let iconPath = null;
-
-  // If icon img file exists then just provide the path, else fetch the icon and create and save in the local file system.
-  try {
-    fs.statSync(__dirname + `/public/weather_icons/img_${iconName}.png`);
-    // console.log(iconName, "exists");
-    iconPath = `weather_icons/img_${iconName}.png`;
-  } catch (err) {
-    // console.warn(iconName, "doesn't exists");
-    // console.error(err);
-
-    const iconBlob = await FetchData.getWeatherIcon(iconName);
-    iconPath = await makeIcon(iconName, iconBlob);
-  }
-
-  data.push({ iconPath });
+  data.push({iconPath});
+  console.log(data);
   res.json(data);
-
 });

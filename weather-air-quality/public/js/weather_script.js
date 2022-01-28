@@ -12,19 +12,7 @@ const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">Op
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution }).addTo(map);
 
-navigator.geolocation.getCurrentPosition(async pos => {
-
-  const coords = pos.coords;
-  // console.log(coords);
-
-  const lat = coords.latitude;
-  const lon = coords.longitude;
-
-  latitude.textContent = lat.toFixed(4);
-  longitude.textContent = lon.toFixed(4);
-
-  const data = await getData(lat, lon);
-  console.log(data);
+const placeMarker = (lat, lon, data) => {
 
   const myIcon = L.divIcon({
     html: `<img src="${data.weatherIconPath}" /><span>${data.city}<span>`,
@@ -47,5 +35,23 @@ navigator.geolocation.getCurrentPosition(async pos => {
   `);
 
   map.setView([lat, lon], 5);
+
+}
+
+navigator.geolocation.getCurrentPosition(async pos => {
+
+  const coords = pos.coords;
+  // console.log(coords);
+
+  const lat = coords.latitude;
+  const lon = coords.longitude;
+
+  latitude.textContent = lat.toFixed(4);
+  longitude.textContent = lon.toFixed(4);
+
+  const data = await getData(lat, lon);
+  console.log(data);
+
+  placeMarker(lat, lon, data);
 
 }, (err) => console.error(err));

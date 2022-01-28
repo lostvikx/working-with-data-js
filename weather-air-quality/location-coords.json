@@ -1,0 +1,121 @@
+[
+  {
+    "location": "Tokyo",
+    "coords": {
+      "lat": 35.686734,
+      "lon": 139.769036
+    }
+  },
+  {
+    "location": "Kuala Lumpur",
+    "coords": {
+      "lat": 3.132620,
+      "lon": 101.681967
+    }
+  },
+  {
+    "location": "New Delhi",
+    "coords": {
+      "lat": 28.597856,
+      "lon": 77.219071
+    }
+  },
+  {
+    "location": "Jerusalem",
+    "coords": {
+      "lat": 31.728979,
+      "lon": 35.135820
+    }
+  },
+  {
+    "location": "Jerusalem",
+    "coords": {
+      "lat": 31.728979,
+      "lon": 35.135820
+    }
+  },
+  {
+    "location": "Athens",
+    "coords": {
+      "lat": 37.981717,
+      "lon": 23.725395
+    }
+  },
+  {
+    "location": "Paris",
+    "coords": {
+      "lat": 48.861994,
+      "lon": 2.295192
+    }
+  },
+  {
+    "location": "Amsterdam",
+    "coords": {
+      "lat": 52.364172,
+      "lon": 4.879263
+    }
+  },
+  {
+    "location": "London",
+    "coords": {
+      "lat": 51.514836,
+      "lon": -0.131847
+    }
+  },
+  {
+    "location": "Oslo",
+    "coords": {
+      "lat": 59.917848,
+      "lon": 10.750858
+    }
+  },
+  {
+    "location": "Vik",
+    "coords": {
+      "lat": 63.418541,
+      "lon": -19.001777
+    }
+  },
+  {
+    "location": "São Paulo",
+    "coords": {
+      "lat": -23.557474,
+      "lon": -46.649085
+    }
+  },
+  {
+    "location": "Copiapó",
+    "coords": {
+      "lat": -27.372684,
+      "lon": -70.319980
+    }
+  },
+  {
+    "location": "Santiago",
+    "coords": {
+      "lat": -33.499044,
+      "lon": -70.714966
+    }
+  },
+  {
+    "location": "New York",
+    "coords": {
+      "lat": 40.783229,
+      "lon": -73.975186
+    }
+  },
+  {
+    "location": "Los Angeles",
+    "coords": {
+      "lat": 34.055779,
+      "lon": -118.242520
+    }
+  },
+  {
+    "location": "Maiya",
+    "coords": {
+      "lat": 61.739016,
+      "lon": 130.282704
+    }
+  }
+]
