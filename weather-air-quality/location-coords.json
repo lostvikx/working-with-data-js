@@ -117,5 +117,75 @@
       "lat": 61.739016,
       "lon": 130.282704
     }
+  },
+  {
+    "location": "Cape Town",
+    "coords": {
+      "lat": -33.892591,
+      "lon": 18.631187
+    }
+  },
+  {
+    "location": "Lagos",
+    "coords": {
+      "lat": 6.454662,
+      "lon": 3.389438
+    }
+  },
+  {
+    "location": "Shanghai",
+    "coords": {
+      "lat": 30.837749,
+      "lon": 121.088671
+    }
+  },
+  {
+    "location": "Wuhan",
+    "coords": {
+      "lat": 30.632383,
+      "lon": 114.288410
+    }
+  },
+  {
+    "location": "Bangkok",
+    "coords": {
+      "lat": 13.667548,
+      "lon": 100.598022
+    }
+  },
+  {
+    "location": "Surgut",
+    "coords": {
+      "lat": 61.245573,
+      "lon": 73.409625
+    }
+  },
+  {
+    "location": "Seattle",
+    "coords": {
+      "lat": 47.646237,
+      "lon": -122.392136
+    }
+  },
+  {
+    "location": "Gold Coast",
+    "coords": {
+      "lat": -28.000921,
+      "lon": 153.392849
+    }
+  },
+  {
+    "location": "Wellington",
+    "coords": {
+      "lat": -41.298045,
+      "lon": 174.771923
+    }
+  },
+  {
+    "location": "Honolulu",
+    "coords": {
+      "lat": 21.303646,
+      "lon": -157.851280
+    }
   }
 ]
