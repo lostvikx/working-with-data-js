@@ -1,6 +1,7 @@
 "use strict";
 
 import getData from "./getData.js";
+import fetchCoords from "./fetchCoords.js";
 
 // Geo Location
 const latitude = document.getElementById("lat");
@@ -41,13 +42,32 @@ navigator.geolocation.getCurrentPosition(async pos => {
   const coords = pos.coords;
   // console.log(coords);
 
-  const lat = coords.latitude;
-  const lon = coords.longitude;
+  let lat = coords.latitude;
+  lat = Number(lat.toFixed(6));
+  let lon = coords.longitude;
+  lon = Number(lon.toFixed(6));
 
-  latitude.textContent = lat.toFixed(4);
-  longitude.textContent = lon.toFixed(4);
+  latitude.textContent = lat;
+  longitude.textContent = lon;
 
-  const data = await getData(lat, lon);
+  const allLocationsWithCoords = await fetchCoords("../json/location-coords.json");
+
+  allLocationsWithCoords.push({
+    location: "Home",
+    coords: { lat, lon }
+  });
+  console.log(allLocationsWithCoords);
+
+  // const data = await getData(lat, lon);
+  // console.log(data);
+
+  const allLocPromises = allLocationsWithCoords.map(async ({ location, coords }) => {
+
+    return getData(coords.lat, coords.lon, location);
+
+  });
+
+  const data = await Promise.all(allLocPromises);
   console.log(data);
 
   for (const place of data) {
