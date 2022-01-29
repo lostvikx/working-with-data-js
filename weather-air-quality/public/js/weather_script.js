@@ -1,7 +1,7 @@
 "use strict";
 
 import getData from "./getData.js";
-// import fetchCoords from "./fetchCoords.js";
+import fetchCoords from "./fetchCoords.js";
 
 // Geo Location
 const latitude = document.getElementById("lat");
@@ -50,14 +50,15 @@ navigator.geolocation.getCurrentPosition(async pos => {
   latitude.textContent = lat;
   longitude.textContent = lon;
 
-  const data = [await getData(lat, lon, "Home")];
+  const homePlace = await getData(lat, lon, "Home");
 
-  for (const place of data) {
+  placeMarker(homePlace.coords.lat, homePlace.coords.lon, homePlace);
 
-    placeMarker(place.coords.lat, place.coords.lon, place);
-    map.setView([place.coords.lat, place.coords.lon], 5);
-
+  if (homePlace.city === "Home") {
+    map.setView([homePlace.coords.lat, homePlace.coords.lon], 5);
   }
+
+  const allPlaces = await fetch("/more-weather");
 
 }, (err) => {
   console.error(err);
