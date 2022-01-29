@@ -41,10 +41,19 @@ const placeMarker = (lat, lon, data) => {
 }
 
 const userCoords = getLocalData("userCoords");
+const userCoordsData = getLocalData("userCoordsData");
 
-const main = async (lat, lon, homeDataStoredLocally) => {
+const plotUserData = async (lat, lon, storedLocally) => {
 
-  const homeCoordsData = await getData(lat, lon, "Home");
+  let homeCoordsData = null;
+
+  if (storedLocally) {
+    homeCoordsData = getLocalData("userCoordsData");
+  } else {
+    homeCoordsData = await getData(lat, lon, "Home");
+  }
+
+  // const homeCoordsData = await getData(lat, lon, "Home");
 
   placeMarker(homeCoordsData.coords.lat, homeCoordsData.coords.lon, homeCoordsData);
 
@@ -52,7 +61,11 @@ const main = async (lat, lon, homeDataStoredLocally) => {
     map.setView([homeCoordsData.coords.lat, homeCoordsData.coords.lon], 5);
   }
 
-  const allPlaces = await fetch("/more-weather");
+  return homeCoordsData;
+
+  // temp
+  // const allPlaces = await fetch("/more-weather");
+  // console.log(await allPlaces.json());
 
 }
 
@@ -68,10 +81,14 @@ if (userCoords === null) {
     latitude.textContent = lat;
     longitude.textContent = lon;
 
-    await main(lat, lon, false);
+    const homeCoordsData = await plotUserData(lat, lon);
 
     // key, value, ttl
     setLocalData("userCoords", { lat, lon }, 180000);
+
+    if (userCoordsData === null) {
+      setLocalData("userCoordsData", homeCoordsData, 180000);
+    }
 
   }, (err) => {
     console.error(err);
@@ -91,8 +108,10 @@ if (userCoords === null) {
     latitude.textContent = lat;
     longitude.textContent = lon;
 
-    await main(lat, lon, true);
+    const homeCoordsData = await plotUserData(lat, lon, true);
+    console.log(homeCoordsData);
 
+    
   })();
 
 }
