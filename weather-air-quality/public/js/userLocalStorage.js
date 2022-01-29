@@ -1,34 +1,34 @@
 "use strict";
 
 // val = { lat: , lon: }, ttl = time in ms
-const setUserCoordsWithExpiry = (key, val, ttl) => {
+const setLocalData = (key, val, ttl) => {
 
-  const coords = {
-    val,
+  const item = {
+    data: val,
     expiry: new Date().getTime() + ttl
   }
 
-  localStorage.setItem(key, JSON.stringify(coords));
+  localStorage.setItem(key, JSON.stringify(item));
 
 }
 
-const getUserCoordsWithExpiry = (key) => {
+const getLocalData = (key) => {
 
-  const item = localStorage.getItem(key) || null;
+  const item = localStorage.getItem(key);
 
   if (item === null) return null;
 
-  const coords = JSON.parse(item);
+  const { data, expiry } = JSON.parse(item);
 
-  if (new Date().getTime() > coords.expiry) {
+  if (new Date().getTime() > expiry) {
 
     localStorage.removeItem(key);
     return null;
 
   } else {
-    return coords.val;
+    return data;
   }
 
 }
 
-export { setUserCoordsWithExpiry, getUserCoordsWithExpiry };
+export { setLocalData, getLocalData };

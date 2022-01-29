@@ -90,41 +90,52 @@ const getAllFive = async (lat, lon, location) => {
 }
 
 const timeToLive = 1800; // 30 minutes
+const allCoords = FetchData.getCoordsFromFile("test-coords");
+
+const storeCache = async (allCoords, cache) => {
+
+  const allCoordsPromises = allCoords.map(async ({ location, coords }) => {
+
+    return getAllFive(coords.lat, coords.lon, location);
+
+  });
+
+  const data = await Promise.all(allCoordsPromises);
+
+  const setData = cache.set("allData", data, timeToLive);
+
+  if (setData) {
+    console.log("set cache passed!");
+  } else {
+    console.log("cache failed!");
+  }
+
+}
 
 const cache = new NodeCache({ stdTTL: timeToLive });
 
 app.get("/more-weather", async (req, res) => {
 
-  const allCoords = FetchData.getCoordsFromFile("test-coords");
   // console.log(allCoords);
 
   const allData = cache.get("allData");
 
   if (allData === undefined) {
 
-    const allCoordsPromises = allCoords.map(async ({ location, coords }) => {
-
-      return getAllFive(coords.lat, coords.lon, location);
-
-    });
-
-    const data = await Promise.all(allCoordsPromises);
-
-    const setData = cache.set("allData", data, timeToLive);
-
-    if (setData) {
-      console.log("cache pass!");
-    } else {
-      console.log("cache failed!");
-    }
+    await storeCache(allCoords, cache);
 
   } else {
-    console.log("allData in cache!");
+    console.log("retrieved allData from cache!");
   }
-
-  console.log(cache.getTtl("allData"));
 
   res.setHeader("Cache-Control", `private, max-age=${timeToLive}`);
   res.json(allData);
+
+});
+
+cache.on("expired", async () => {
+
+  await storeCache(allCoords, cache);
+  console.log("cache expired and got updated with new data!");
 
 });

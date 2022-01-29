@@ -1,7 +1,7 @@
 "use strict";
 
 import getData from "./getData.js";
-import fetchCoords from "./fetchCoords.js";
+import { setLocalData, getLocalData } from "./userLocalStorage.js";
 
 // Geo Location
 const latitude = document.getElementById("lat");
@@ -40,33 +40,59 @@ const placeMarker = (lat, lon, data) => {
 
 }
 
-navigator.geolocation.getCurrentPosition(async pos => {
+const userCoords = getLocalData("userCoords");
 
-  const coords = pos.coords;
+const main = async (lat, lon, homeDataStoredLocally) => {
 
-  const lat = Number(coords.latitude.toFixed(6));
-  const lon = Number(coords.longitude.toFixed(6));
+  const homeCoordsData = await getData(lat, lon, "Home");
 
-  latitude.textContent = lat;
-  longitude.textContent = lon;
+  placeMarker(homeCoordsData.coords.lat, homeCoordsData.coords.lon, homeCoordsData);
 
-  const homePlace = await getData(lat, lon, "Home");
-
-  placeMarker(homePlace.coords.lat, homePlace.coords.lon, homePlace);
-
-  if (homePlace.city === "Home") {
-    map.setView([homePlace.coords.lat, homePlace.coords.lon], 5);
+  if (homeCoordsData.city === "Home") {
+    map.setView([homeCoordsData.coords.lat, homeCoordsData.coords.lon], 5);
   }
 
   const allPlaces = await fetch("/more-weather");
 
-}, (err) => {
-  console.error(err);
-  console.log("Please allow location access!");
-  mainTag.textContent = "Please allow location access 📍";
-  mainTag.style.fontSize = "1.5rem";
-}, {
-  maximumAge: 180000,
-  timeout: 5000,
-  enableHighAccuracy: false
-});
+}
+
+if (userCoords === null) {
+
+  navigator.geolocation.getCurrentPosition(async pos => {
+
+    const coords = pos.coords;
+
+    const lat = Number(coords.latitude.toFixed(6));
+    const lon = Number(coords.longitude.toFixed(6));
+
+    latitude.textContent = lat;
+    longitude.textContent = lon;
+
+    await main(lat, lon, false);
+
+    // key, value, ttl
+    setLocalData("userCoords", { lat, lon }, 180000);
+
+  }, (err) => {
+    console.error(err);
+    console.log("Please allow location access!");
+    mainTag.textContent = "Please allow location access 📍";
+    mainTag.style.fontSize = "1.5rem";
+  }, {
+    maximumAge: 180000,
+    enableHighAccuracy: false
+  });
+
+} else {
+
+  (async () => {
+
+    const { lat, lon } = userCoords;
+    latitude.textContent = lat;
+    longitude.textContent = lon;
+
+    await main(lat, lon, true);
+
+  })();
+
+}

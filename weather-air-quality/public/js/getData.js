@@ -1,7 +1,5 @@
 "use strict";
 
-// import { storeUserCoords, getUserCoords } from "./cacheCoords.js";
-
 const getData = async (lat, lon, location) => {
 
   const info = {};
