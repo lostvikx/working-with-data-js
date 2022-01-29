@@ -21,7 +21,7 @@ const getData = async (lat, lon, location) => {
 
     if (res === undefined || res == null) {
 
-      console.warn(`${url} not found in cache`);
+      // console.warn(`${url} not found in cache`);
 
       res = await storeCacheCoords(url, cache);
 
