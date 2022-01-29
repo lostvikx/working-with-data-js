@@ -1,6 +1,6 @@
 "use strict";
 
-import storeCacheCoords from "./storeCacheCoords.js";
+import {storeCacheCoords, getCachedCoords} from "./cacheCoords.js";
 
 const getData = async (lat, lon, location) => {
 
@@ -17,9 +17,9 @@ const getData = async (lat, lon, location) => {
 
     let res = null;
 
-    res = await cache.match(url);
+    res = await getCachedCoords(url, cache);
 
-    if (res === undefined) {
+    if (res === undefined || res == null) {
 
       console.warn(`${url} not found in cache`);
 
@@ -55,7 +55,7 @@ const getData = async (lat, lon, location) => {
     }
 
     const air_info = aqData;
-    // console.log(air_info)
+    // console.debug(location, air_info);
 
     if (air_info.failed) {
 

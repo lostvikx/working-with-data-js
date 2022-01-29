@@ -1,5 +1,6 @@
 "use strict";
 
+// fetchCoords from JSON file
 const fetchCoords = async (path) => {
 
   const res = await fetch(path);

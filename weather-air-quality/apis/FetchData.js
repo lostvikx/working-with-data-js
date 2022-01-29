@@ -18,6 +18,8 @@ module.exports = class FetchData {
       const res = await fetch(url);
       const data = await res.json();
 
+      if (data.results == undefined) throw Error("no results found");
+
       return data;
 
     } catch (err) {

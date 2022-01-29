@@ -32,6 +32,7 @@ const placeMarker = (lat, lon, data) => {
       <b>Humidity:</b> ${data.humidity}%<br />
       <b>Air Quality:</b> ${data.airQuality} ${data.airQualityUnit}<br />
       <b>Wind Speed:</b> ${data.windSpeed} km/hr<br />
+      <b>Data Last Updated:</b> ${data.lastUpdated}
     </p>
   `);
 
@@ -43,9 +44,9 @@ navigator.geolocation.getCurrentPosition(async pos => {
   // console.log(coords);
 
   let lat = coords.latitude;
-  lat = Number(lat.toFixed(6));
+  lat = Number(lat.toFixed(5));
   let lon = coords.longitude;
-  lon = Number(lon.toFixed(6));
+  lon = Number(lon.toFixed(5));
 
   latitude.textContent = lat;
   longitude.textContent = lon;
@@ -56,7 +57,7 @@ navigator.geolocation.getCurrentPosition(async pos => {
     location: "Home",
     coords: { lat, lon }
   });
-  console.log(allLocationsWithCoords);
+  // console.log(allLocationsWithCoords);
 
   const allLocPromises = allLocationsWithCoords
     .map(async ({ location, coords }) => getData(coords.lat, coords.lon, location));

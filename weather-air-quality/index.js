@@ -35,35 +35,16 @@ const getAllData = async (lat, lon) => {
 // This is called a proxy server (middle man)
 app.get("/weather", async (req, res) => {
 
-  // const allCoords = FetchData.getCoords("location-coords");
-  // console.log(allCoords);
   // console.log(req.query);
   const { lat, lon } = req.query;
-
-  // allCoords.push({
-  //   location: "Home",
-  //   coords: { lat, lon }
-  // });
 
   const data = await getAllData(lat, lon);
   const iconPath = await fetchIcon(data[0]);
 
-  // const dataForAllCoords = allCoords.map(async ({ location, coords }) => {
-
-  //   const data = await getAllData(coords.lat, coords.lon);
-  //   const iconPath = await fetchIcon(data[0]);
-  //   data.push({ iconPath });
-  //   data.push({ city: location });
-  //   data.push({ coords });
-
-  //   return data;
-
-  // });
-
-  // const data = await Promise.all(dataForAllCoords);
-
   data.push({iconPath});
-  // console.log(data); // [{weatherData}, {aqData}, {iconPath}]
-  res.setHeader("Cache-Control", "private, max-age=3600");
+  console.log(data); // [{weatherData}, {aqData}, {iconPath}]
+
+  res.setHeader("Cache-Control", "private, max-age=1800");
   res.json(data);
+
 });
