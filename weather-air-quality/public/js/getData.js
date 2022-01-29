@@ -84,7 +84,6 @@ const getData = async (lat, lon, location) => {
       }
 
     }
-
     return info;
 
   } catch (err) {

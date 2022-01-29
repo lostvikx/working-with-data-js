@@ -90,7 +90,7 @@ const getAllFive = async (lat, lon, location) => {
 }
 
 const timeToLive = 1800; // 30 minutes
-const allCoords = FetchData.getCoordsFromFile("test-coords");
+const allCoords = FetchData.getCoordsFromFile("location-coords");
 
 const storeCache = async (allCoords, cache) => {
 
@@ -106,8 +106,10 @@ const storeCache = async (allCoords, cache) => {
 
   if (setData) {
     console.log("set cache passed!");
+    return cache.get("allData");
   } else {
     console.log("cache failed!");
+    return null;
   }
 
 }
@@ -118,11 +120,11 @@ app.get("/more-weather", async (req, res) => {
 
   // console.log(allCoords);
 
-  const allData = cache.get("allData");
+  let allData = cache.get("allData");
 
   if (allData === undefined) {
 
-    await storeCache(allCoords, cache);
+    allData = await storeCache(allCoords, cache);
 
   } else {
     console.log("retrieved allData from cache!");

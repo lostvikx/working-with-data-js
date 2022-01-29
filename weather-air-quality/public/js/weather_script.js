@@ -58,17 +58,106 @@ const plotUserData = async (lat, lon, storedLocally) => {
   placeMarker(homeCoordsData.coords.lat, homeCoordsData.coords.lon, homeCoordsData);
 
   if (homeCoordsData.city === "Home") {
-    map.setView([homeCoordsData.coords.lat, homeCoordsData.coords.lon], 5);
+    map.setView([homeCoordsData.coords.lat, homeCoordsData.coords.lon], 4);
   }
 
   return homeCoordsData;
 
-  // temp
-  // const allPlaces = await fetch("/more-weather");
-  // console.log(await allPlaces.json());
+}
+
+const plotAllUsersData = async () => {
+
+  const allPlaces = await fetch("/more-weather");
+  const allPlacesData = await allPlaces.json();
+  const allPlacesInfo = [];
+
+  console.log(allPlacesData);
+
+  for (const place of allPlacesData) {
+
+    const info = {};
+    const [weatherData, aqData, weatherImgPath, {location}, coords ] = place;
+
+    info.city = location;
+    info.coords = coords;
+
+    const temp_info = weatherData;
+
+    if (temp_info.failed || temp_info.message) {
+
+      console.log(temp_info.message);
+      info.tempDataFailed = true;
+      info.temp = "No data";
+      info.humidity = "No data";
+      info.windSpeed = "No data";
+
+    } else {
+
+      info.temp = temp_info.main.temp;
+      info.humidity = temp_info.main.humidity;
+      info.windSpeed = temp_info.wind.speed;
+
+      const { iconPath } = weatherImgPath;
+      info.weatherIconPath = iconPath;
+
+    }
+
+    const air_info = aqData;
+    // console.debug(location, air_info);
+
+    if (air_info.failed) {
+
+      console.log(air_info.message);
+      info.airDataFailed = true;
+      info.airQuality = "No data";
+      info.airQualityUnit = "";
+
+    } else {
+
+      if (air_info.results.length == 0 || air_info.results == undefined) {
+        info.airDataFailed = true;
+        info.airQuality = "No data";
+        info.airQualityUnit = "";
+        console.log(`${info.city} has no air quality measurements.`);
+      } else {
+
+        // results are sorted by nearest
+        const air_quality = air_info.results[0];
+        let first_measurement = air_quality.measurements
+          .filter((measurement) => measurement.parameter == "pm10")[0];
+
+        if (first_measurement == undefined) {
+          console.log(`${info.city} had no measurements in pm10.`);
+          first_measurement = air_quality.measurements[0];
+        }
+
+        // console.log(first_measurement);
+
+        info.location = air_quality.location;
+        info.airQuality = first_measurement.value;
+        info.airQualityUnit = first_measurement.unit;
+        info.lastUpdated = new Date(first_measurement.lastUpdated).toLocaleString();
+
+      }
+
+    }
+
+    allPlacesInfo.push(info);
+
+  }
+  
+  for (const placeInfo of allPlacesInfo) {
+
+    placeMarker(placeInfo.coords.lat, placeInfo.coords.lon, placeInfo);
+
+  }
+  console.log(allPlacesInfo);
 
 }
 
+plotAllUsersData();
+
+// userCoords not in localStorage
 if (userCoords === null) {
 
   navigator.geolocation.getCurrentPosition(async pos => {
@@ -111,7 +200,7 @@ if (userCoords === null) {
     const homeCoordsData = await plotUserData(lat, lon, true);
     console.log(homeCoordsData);
 
-    
+
   })();
 
 }
