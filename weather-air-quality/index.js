@@ -39,9 +39,18 @@ app.get("/weather", async (req, res) => {
   const { lat, lon } = req.query;
 
   const data = await getAllData(lat, lon);
-  const iconPath = await fetchIcon(data[0]);
 
-  data.push({iconPath});
+  let iconPath = null;
+
+  if (!data[0].failed) {
+    try {
+      iconPath = await fetchIcon(data[0]);
+    } catch (err) {
+      console.warn("weatherData server error!");
+    }
+  }
+
+  data.push({ iconPath });
   // console.log(data); // [{weatherData}, {aqData}, {iconPath}]
 
   res.setHeader("Cache-Control", "private, max-age=1800");

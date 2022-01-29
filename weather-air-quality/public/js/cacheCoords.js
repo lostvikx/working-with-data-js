@@ -1,6 +1,6 @@
 "use strict";
 
-const storeCacheCoords = async (url, cache) => {
+const storeUserCoords = async (url, cache) => {
 
   try {
 
@@ -15,6 +15,7 @@ const storeCacheCoords = async (url, cache) => {
     // clone is needed because put() consumes the response body
     const response = res.clone();
 
+    // stores cache
     await cache.put(url, res);
 
     return response;
@@ -32,7 +33,7 @@ const roundTwoDecimal = (floatingNum) => {
 
 }
 
-const getCachedCoords = async (url, cache) => {
+const getUserCoords = async (url, cache) => {
 
   let res = await cache.match(url);
 
@@ -49,7 +50,7 @@ const getCachedCoords = async (url, cache) => {
       const dataDeleted = await cache.delete(url);
       if (dataDeleted) {
 
-        // console.debug(url, "deleted");
+        console.debug(url, "deleted");
         res = null;
 
       }
@@ -57,7 +58,7 @@ const getCachedCoords = async (url, cache) => {
     }
 
     else {
-      // console.log(timeToLive - timePassed, "time left before cache refresh!");
+      console.log(timeToLive - timePassed, "time left before cache refresh!");
     }
   }
 
@@ -65,4 +66,4 @@ const getCachedCoords = async (url, cache) => {
 
 }
 
-export {storeCacheCoords, getCachedCoords};
+export { storeUserCoords, getUserCoords };

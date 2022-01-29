@@ -1,12 +1,14 @@
 "use strict";
 
 import getData from "./getData.js";
-import fetchCoords from "./fetchCoords.js";
+// import fetchCoords from "./fetchCoords.js";
 
 // Geo Location
 const latitude = document.getElementById("lat");
 const longitude = document.getElementById("lon");
+const mainTag = document.getElementById("coords");
 
+// map via leaflet.js
 const map = L.map('map').setView([0, 0], 3);
 
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
@@ -16,7 +18,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution 
 const placeMarker = (lat, lon, data) => {
 
   const myIcon = L.divIcon({
-    html: `<img src="${data.weatherIconPath}" /><span>${data.city}<span>`,
+    html: `<img src="${data.weatherIconPath || "weather_icons/img_01d.png"}" /><span>${data.city}<span>`,
     iconAnchor: [25, 25],
     popupAnchor: [35, -5],
   });
@@ -41,7 +43,6 @@ const placeMarker = (lat, lon, data) => {
 navigator.geolocation.getCurrentPosition(async pos => {
 
   const coords = pos.coords;
-  // console.log(coords);
 
   const lat = Number(coords.latitude.toFixed(6));
   const lon = Number(coords.longitude.toFixed(6));
@@ -49,29 +50,22 @@ navigator.geolocation.getCurrentPosition(async pos => {
   latitude.textContent = lat;
   longitude.textContent = lon;
 
-  const allLocationsWithCoords = await fetchCoords("../json/location-coords.json");
-
-  allLocationsWithCoords.push({
-    location: "Home",
-    coords: { lat, lon }
-  });
-
-  // console.log(allLocationsWithCoords);
-
-  const allLocPromises = allLocationsWithCoords
-    .map(async ({ location, coords }) => getData(coords.lat, coords.lon, location));
-
-  const data = await Promise.all(allLocPromises);
-  // console.log(data);
+  const data = [await getData(lat, lon, "Home")];
 
   for (const place of data) {
 
     placeMarker(place.coords.lat, place.coords.lon, place);
-
-    if (place.city == "Home") {
-      map.setView([place.coords.lat, place.coords.lon], 5);
-    }
+    map.setView([place.coords.lat, place.coords.lon], 5);
 
   }
 
-}, (err) => console.error(err));
+}, (err) => {
+  console.error(err);
+  console.log("Please allow location access!");
+  mainTag.textContent = "Please allow location access 📍";
+  mainTag.style.fontSize = "1.5rem";
+}, {
+  maximumAge: 180000,
+  timeout: 5000,
+  enableHighAccuracy: false
+});

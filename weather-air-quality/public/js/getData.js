@@ -1,6 +1,6 @@
 "use strict";
 
-import {storeCacheCoords, getCachedCoords} from "./cacheCoords.js";
+// import { storeUserCoords, getUserCoords } from "./cacheCoords.js";
 
 const getData = async (lat, lon, location) => {
 
@@ -10,22 +10,12 @@ const getData = async (lat, lon, location) => {
 
     const url = `/weather?lat=${lat}&lon=${lon}`;
 
-    // creates cache with cacheName as allCoords, if cacheName exists get that 
-    const cache = await caches.open("allCoords");
-
-    // cache.put(url, res);
-
-    let res = null;
-
-    res = await getCachedCoords(url, cache);
-
-    if (res === undefined || res == null) {
-
-      // console.warn(`${url} not found in cache`);
-
-      res = await storeCacheCoords(url, cache);
-
-    }
+    const res = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
 
     const data = await res.json();
 
@@ -36,21 +26,24 @@ const getData = async (lat, lon, location) => {
 
     // console.log(weatherData, aqData, weatherImgPath);
 
-    const { iconPath } = weatherImgPath;
-    info.weatherIconPath = iconPath;
-
     const temp_info = weatherData;
 
-    if (temp_info.failed) {
+    if (temp_info.failed || temp_info.message) {
 
       console.log(temp_info.message);
       info.tempDataFailed = true;
+      info.temp = "No data";
+      info.humidity = "No data";
+      info.windSpeed = "No data";
 
     } else {
 
       info.temp = temp_info.main.temp;
       info.humidity = temp_info.main.humidity;
       info.windSpeed = temp_info.wind.speed;
+
+      const { iconPath } = weatherImgPath;
+      info.weatherIconPath = iconPath;
 
     }
 
@@ -61,6 +54,8 @@ const getData = async (lat, lon, location) => {
 
       console.log(air_info.message);
       info.airDataFailed = true;
+      info.airQuality = "No data";
+      info.airQualityUnit = "";
 
     } else {
 

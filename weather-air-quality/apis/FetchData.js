@@ -25,7 +25,10 @@ module.exports = class FetchData {
     } catch (err) {
       console.warn("getAirQualityData failed!");
       console.error(err);
-      return { failed: true, message: "No air quality data available" };
+      return { 
+        failed: true, 
+        message: "No air quality data available" 
+      };
     }
 
   }
@@ -44,7 +47,10 @@ module.exports = class FetchData {
     } catch (err) {
       console.warn("getWeatherData failed!");
       console.error(err);
-      return { failed: true, message: "No temperature data available" };
+      return { 
+        failed: true, 
+        message: "No temperature data available" 
+      };
     }
 
   }
@@ -70,7 +76,7 @@ module.exports = class FetchData {
 
   }
 
-  static getCoords(jsonFileName) {
+  static getCoordsFromFile(jsonFileName) {
 
     const data = fs.readFileSync(__dirname + `/../${jsonFileName}.json`, {
       encoding: "utf-8",
