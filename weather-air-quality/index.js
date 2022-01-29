@@ -42,7 +42,7 @@ app.get("/weather", async (req, res) => {
   const iconPath = await fetchIcon(data[0]);
 
   data.push({iconPath});
-  console.log(data); // [{weatherData}, {aqData}, {iconPath}]
+  // console.log(data); // [{weatherData}, {aqData}, {iconPath}]
 
   res.setHeader("Cache-Control", "private, max-age=1800");
   res.json(data);

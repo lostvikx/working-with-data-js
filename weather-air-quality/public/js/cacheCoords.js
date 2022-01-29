@@ -49,7 +49,7 @@ const getCachedCoords = async (url, cache) => {
       const dataDeleted = await cache.delete(url);
       if (dataDeleted) {
 
-        console.debug(url, "deleted");
+        // console.debug(url, "deleted");
         res = null;
 
       }
@@ -57,7 +57,7 @@ const getCachedCoords = async (url, cache) => {
     }
 
     else {
-      console.log(timeToLive - timePassed, "time left before cache refresh!")
+      // console.log(timeToLive - timePassed, "time left before cache refresh!");
     }
   }
 
