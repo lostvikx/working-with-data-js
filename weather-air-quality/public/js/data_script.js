@@ -4,13 +4,22 @@ import { setLocalData, getLocalData } from "./userLocalStorage.js";
 import getMoreWeatherData from "./getMoreWeather.js";
 
 const root = document.getElementById("all-data");
+let loading = document.getElementById("loading");
 
 const userCoords = getLocalData("userCoords");
 const userCoordsData = getLocalData("userCoordsData");
 
-console.log(userCoords, userCoordsData);
+// console.log(userCoords, userCoordsData);
 
 const renderData = (data) => {
+
+  if (loading) {
+
+    loading.remove();
+    loading = null;
+    // console.log(loading, "loading rm");
+
+  }
 
   const { lat, lon } = data.coords;
   const place = document.createElement("div");

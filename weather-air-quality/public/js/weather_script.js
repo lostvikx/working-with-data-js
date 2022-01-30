@@ -20,7 +20,7 @@ const placeMarker = (lat, lon, data) => {
 
   const myIcon = L.divIcon({
     html: `<img src="${data.weatherIconPath || "weather_icons/img_01d.png"}" /><span>${data.city}<span>`,
-    iconAnchor: [25, 25],
+    iconAnchor: [0, 0],
     popupAnchor: [35, -5],
   });
 
@@ -76,7 +76,7 @@ const plotAllUsersData = async () => {
     placeMarker(placeInfo.coords.lat, placeInfo.coords.lon, placeInfo);
 
   }
-  console.log(allPlacesInfo);
+  // console.log(allPlacesInfo);
 
 }
 
@@ -107,7 +107,7 @@ if (userCoords === null) {
   }, (err) => {
     console.error(err);
     console.log("Please allow location access!");
-    mainTag.textContent = "Please allow location access 📍";
+    mainTag.textContent = "📍 Reload the page and allow location access.";
     mainTag.style.fontSize = "1.5rem";
   }, {
     maximumAge: 180000,
@@ -123,7 +123,7 @@ if (userCoords === null) {
     longitude.textContent = lon;
 
     const homeCoordsData = await plotUserData(lat, lon, true);
-    console.log(homeCoordsData);
+    // console.log(homeCoordsData);
 
 
   })();
