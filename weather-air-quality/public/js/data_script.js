@@ -16,9 +16,16 @@ const renderData = (data) => {
   const place = document.createElement("div");
   place.className = "place";
 
+  const placeTitle = document.createElement("div");
+  placeTitle.className = "place-title";
+  const placeDetails = document.createElement("div");
+  placeDetails.className = "place-details";
+
   // city name
   const placeName = document.createElement("h2");
   placeName.textContent = data.city;
+
+  placeTitle.append(placeName);
 
   // icon and temp
   const temp = document.createElement("div");
@@ -58,7 +65,9 @@ const renderData = (data) => {
   const windSpeed = document.createElement("p");
   windSpeed.textContent = `🍃 ${data.windSpeed} km/hr`;
 
-  place.append(placeName, temp, coords, air_quality, humidity, windSpeed);
+  placeDetails.append(temp, coords, air_quality, humidity, windSpeed);
+
+  place.append(placeTitle, placeDetails);
 
   place.style.height = String(300 + Math.random() * 300) + "px";
 

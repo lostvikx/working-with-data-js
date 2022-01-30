@@ -47,7 +47,8 @@ main {
 }
 
 .temp > img {
-  width: 1.6rem;
+  width: 1.2rem;
+  background-color: rgba(255, 217, 0, 0.5);
 }
 
 .temp {
@@ -55,7 +56,12 @@ main {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 0.5rem;
+  margin: 0.5rem 1rem;
+}
+
+.temp > p {
+  margin: 0;
 }
 
 #all-data {
@@ -74,10 +80,16 @@ main {
   flex-grow: 1;
   padding: 0.5em 1em;
   box-shadow: 0.5rem 0.5rem rgba(0, 0, 255, .2);
+  background-color: ghostwhite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .place:hover {
   box-shadow: 0.5rem 0.5rem rgba(0, 0, 255, 0.35);
+  background-color: white;
 }
 
 a {
@@ -87,4 +99,16 @@ a {
 
 a:focus {
   color: black;
+}
+
+.message {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.place-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
