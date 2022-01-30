@@ -15,7 +15,9 @@ app.use(express.json({
   type: "application/json"
 }));
 
-app.listen(PORT, "localhost", () => console.log(`listening on port http://localhost:${PORT}/`));
+const HOST = process.env.HOST || "0.0.0.0" || "::1" || "localhost";
+
+app.listen(PORT, HOST, () => console.log(`listening on port http://${HOST}:${PORT}/`));
 
 const getAllData = async (lat, lon) => {
 
