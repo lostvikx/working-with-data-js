@@ -27,9 +27,10 @@ const placeMarker = (lat, lon, data) => {
     keyboard: true,
     icon: myIcon
   }).addTo(map);
+
   your_marker.bindPopup(`
     <p class="data">
-      <b>City:</b> ${data.city}<br />
+      <b>City:</b> ${data.city}<br / console.log(evt);>
       <b>Temperature:</b> ${data.temp}°C<br />
       <b>Humidity:</b> ${data.humidity}%<br />
       <b>Air Quality:</b> ${data.airQuality} ${data.airQualityUnit}<br />
@@ -204,3 +205,41 @@ if (userCoords === null) {
   })();
 
 }
+
+const popup = L.popup();
+
+const getWeatherInfoOnClick = () => {
+
+  map.on("click", async (evt) => {
+
+    // console.log(evt.latlng);
+
+    let { lat, lng } = evt.latlng;
+
+    lat = Number(lat.toFixed(6));
+    lon = Number(lng.toFixed(6));
+
+    const data = await getData(lat, lon, "Custom");
+    // console.log(data);
+    data.city = data.location || data.city;
+
+    popup
+      .setLatLng(evt.latlng)
+      .setContent(`
+        <p class="data">
+          <b>City:</b> ${data.city}<br />
+          <b>Lat:</b> ${lat} <b>Long:</b> ${lon}<br />
+          <b>Temperature:</b> ${data.temp}°C<br />
+          <b>Humidity:</b> ${data.humidity}%<br />
+          <b>Air Quality:</b> ${data.airQuality} ${data.airQualityUnit}<br />
+          <b>Wind Speed:</b> ${data.windSpeed} km/hr<br />
+          <b>Data Last Updated:</b> ${data.lastUpdated || "No data"}
+        </p>
+      `)
+      .openOn(map);
+
+  });
+
+}
+
+getWeatherInfoOnClick();
