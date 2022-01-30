@@ -42,13 +42,13 @@ const renderData = (data) => {
     if (quality > 200) return "🥵"
     else if (quality > 100) return "😷";
     else if (quality > 50) return "😐";
-    else if (quality > 0) return "😎";
+    else if (quality >= 0) return "😎";
     else return null;
   }
 
 
   const air_quality = document.createElement("p");
-  air_quality.textContent = `${airQualityFace(data.airQuality) || "No data"}: ${data.airQuality} ${data.airQualityUnit}`;
+  air_quality.textContent = `${airQualityFace(data.airQuality) || "No data"} ${data.airQuality} ${data.airQualityUnit}`;
 
   // humidity
   const humidity = document.createElement("p");
@@ -60,7 +60,7 @@ const renderData = (data) => {
 
   place.append(placeName, temp, coords, air_quality, humidity, windSpeed);
 
-  place.style.height = "300px";
+  place.style.height = String(300 + Math.random() * 300) + "px";
 
   root.append(place);
 

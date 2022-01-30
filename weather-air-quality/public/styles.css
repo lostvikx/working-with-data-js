@@ -22,7 +22,7 @@ main {
 }
 
 #map {
-  height: 400px;
+  height: 480px;
   margin: 2rem auto;
 }
 
@@ -69,9 +69,22 @@ main {
 
 .place {
   border: 2px blueviolet solid;
-  max-width: 300px;
-  flex-basis: 25%;
+  max-width: 250px;
+  flex-basis: 15%;
   flex-grow: 1;
-  padding: 1em 1.5em;
-  height: 400px;
+  padding: 0.5em 1em;
+  box-shadow: 0.5rem 0.5rem rgba(0, 0, 255, .2);
+}
+
+.place:hover {
+  box-shadow: 0.5rem 0.5rem rgba(0, 0, 255, 0.35);
+}
+
+a {
+  text-decoration: none;
+  color: blueviolet;
+}
+
+a:focus {
+  color: black;
 }
