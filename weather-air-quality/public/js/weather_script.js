@@ -16,6 +16,8 @@ const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">Op
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution }).addTo(map);
 
+map.addControl(new L.Control.Fullscreen());
+
 const placeMarker = (lat, lon, data) => {
 
   const myIcon = L.divIcon({
