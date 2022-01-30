@@ -14,6 +14,7 @@ body {
 
 p {
   margin: 0.5rem 1rem;
+  font-size: 0.8rem;
 }
 
 main {
@@ -43,4 +44,34 @@ main {
 
 .leaflet-div-icon > img {
   height: 1rem;
+}
+
+.temp > img {
+  width: 1.6rem;
+}
+
+.temp {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+#all-data {
+  margin: 2rem auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.place {
+  border: 2px blueviolet solid;
+  max-width: 300px;
+  flex-basis: 25%;
+  flex-grow: 1;
+  padding: 1em 1.5em;
+  height: 400px;
 }
